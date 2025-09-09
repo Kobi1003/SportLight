@@ -1,6 +1,7 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
 import { handleVideoCheck } from '@/lib/actions';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
@@ -22,7 +23,7 @@ function SubmitButton() {
 }
 
 export function VideoChecker() {
-  const [state, formAction] = useFormState(handleVideoCheck, initialState);
+  const [state, formAction] = useActionState(handleVideoCheck, initialState);
   const [fileName, setFileName] = useState('');
 
   return (
@@ -107,3 +108,5 @@ export function VideoChecker() {
     </div>
   );
 }
+
+    

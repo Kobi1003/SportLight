@@ -1,6 +1,6 @@
 'use client';
 
-import { useFormState, useFormStatus } from 'react-dom';
+import { useFormStatus } from 'react-dom';
 import { handleVideoGeneration, handleVideoGuidance } from '@/lib/actions';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -10,7 +10,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Lightbulb, Check, Clapperboard, Loader, Video as VideoIcon, Bot } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useActionState } from 'react';
 import { Textarea } from '../ui/textarea';
 
 const initialGuidanceState = {
@@ -143,8 +143,8 @@ const sportCriteria = {
 type Sport = keyof typeof sportCriteria;
 
 export function VideoGuidance() {
-    const [guidanceState, guidanceAction] = useFormState(handleVideoGuidance, initialGuidanceState);
-    const [videoState, videoAction] = useFormState(handleVideoGeneration, initialVideoState);
+    const [guidanceState, guidanceAction] = useActionState(handleVideoGuidance, initialGuidanceState);
+    const [videoState, videoAction] = useActionState(handleVideoGeneration, initialVideoState);
 
     const [selectedSport, setSelectedSport] = useState<Sport | ''>('');
     const [skill, setSkill] = useState('');
@@ -275,3 +275,5 @@ export function VideoGuidance() {
         </div>
     );
 }
+
+    

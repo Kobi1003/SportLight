@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useRef, useEffect } from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useState, useRef, useEffect, useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { handleChat } from '@/lib/actions';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -34,7 +34,7 @@ function ChatSubmitButton() {
 export function Chatbot() {
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
-  const [state, formAction] = useFormState(handleChat, initialState);
+  const [state, formAction] = useActionState(handleChat, initialState);
   const formRef = useRef<HTMLFormElement>(null);
   const scrollAreaRef = useRef<HTMLDivElement>(null);
 
@@ -128,3 +128,5 @@ export function Chatbot() {
     </>
   );
 }
+
+    
