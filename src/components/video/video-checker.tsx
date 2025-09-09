@@ -41,9 +41,16 @@ export function VideoChecker() {
                   <SelectValue placeholder="Select a sport" />
                 </SelectTrigger>
                 <SelectContent>
-                  <SelectItem value="Football">Football</SelectItem>
-                  <SelectItem value="Basketball">Basketball</SelectItem>
-                  <SelectItem value="Tennis">Tennis</SelectItem>
+                    <SelectItem value="Football">Football</SelectItem>
+                    <SelectItem value="Basketball">Basketball</SelectItem>
+                    <SelectItem value="Tennis">Tennis</SelectItem>
+                    <SelectItem value="Cricket">Cricket</SelectItem>
+                    <SelectItem value="Long Jump">Long Jump</SelectItem>
+                    <SelectItem value="High Jump">High Jump</SelectItem>
+                    <SelectItem value="Archery">Archery</SelectItem>
+                    <SelectItem value="Shooting">Shooting</SelectItem>
+                    <SelectItem value="Badminton">Badminton</SelectItem>
+                    <SelectItem value="Javelin">Javelin</SelectItem>
                 </SelectContent>
               </Select>
             </div>
