@@ -50,6 +50,8 @@ export default function ProfilePage() {
   const router = useRouter();
   const { toast } = useToast();
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [referenceImage, setReferenceImage] = useState<string | null>(null);
+
 
   const form = useForm<z.infer<typeof playerFormSchema>>({
     resolver: zodResolver(playerFormSchema),
@@ -64,11 +66,13 @@ export default function ProfilePage() {
   });
 
   function onSubmit(values: z.infer<typeof playerFormSchema>) {
-    if (!generatedImage) {
+    const achievementImage = generatedImage || referenceImage;
+
+    if (!achievementImage) {
         toast({
             variant: "destructive",
-            title: "Image not generated",
-            description: "Please generate an achievement image before creating the player.",
+            title: "Achievement image missing",
+            description: "Please generate or upload an image for the player's achievements.",
         });
         return;
     }
@@ -79,7 +83,7 @@ export default function ProfilePage() {
       skills: values.skills.split(",").map((s) => s.trim()),
       avatar: `https://picsum.photos/seed/${Math.random()}/200/200`,
       verified: false,
-      achievementsImage: generatedImage,
+      achievementsImage: achievementImage,
     };
     addPlayer(newPlayer);
     toast({
@@ -191,6 +195,7 @@ export default function ProfilePage() {
                             textValue={field.value}
                             onTextChange={field.onChange}
                             onImageGenerated={setGeneratedImage}
+                            onReferenceImageSelected={setReferenceImage}
                         />
                     )}
                     />

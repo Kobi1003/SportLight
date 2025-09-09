@@ -17,6 +17,7 @@ interface AchievementGeneratorProps {
   textValue: string;
   onTextChange: (value: string) => void;
   onImageGenerated: (imageUrl: string) => void;
+  onReferenceImageSelected: (imageUrl: string | null) => void;
 }
 
 function SubmitButton() {
@@ -28,7 +29,7 @@ function SubmitButton() {
     );
 }
 
-export function AchievementGenerator({ textValue, onTextChange, onImageGenerated }: AchievementGeneratorProps) {
+export function AchievementGenerator({ textValue, onTextChange, onImageGenerated, onReferenceImageSelected }: AchievementGeneratorProps) {
     const [imageFile, setImageFile] = useState<File | null>(null);
     const [previewUrl, setPreviewUrl] = useState<string | null>(null);
     const [generatedImageUrl, setGeneratedImageUrl] = useState<string | null>(null);
@@ -42,9 +43,14 @@ export function AchievementGenerator({ textValue, onTextChange, onImageGenerated
             setImageFile(file);
             const reader = new FileReader();
             reader.onloadend = () => {
-                setPreviewUrl(reader.result as string);
+                const result = reader.result as string;
+                setPreviewUrl(result);
+                onReferenceImageSelected(result);
             };
             reader.readAsDataURL(file);
+        } else {
+            setPreviewUrl(null);
+            onReferenceImageSelected(null);
         }
     };
 
@@ -64,7 +70,7 @@ export function AchievementGenerator({ textValue, onTextChange, onImageGenerated
             } else if (result.imageUrl) {
                 setGeneratedImageUrl(result.imageUrl);
                 onImageGenerated(result.imageUrl);
-                toast({ title: "Image Generated", description: "Your achievement image is ready." });
+                toast({ title: "Image Generated", description: "Your new achievement image is ready." });
             }
         });
     };
@@ -103,7 +109,7 @@ export function AchievementGenerator({ textValue, onTextChange, onImageGenerated
                             <Input type="file" accept="image/*" onChange={handleFileChange} />
                         </FormControl>
                         <FormDescription>
-                            Upload an image to influence the generation.
+                           Upload an image to use as a base, or to use as the achievement image directly.
                         </FormDescription>
                     </FormItem>
 
