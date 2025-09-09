@@ -85,21 +85,21 @@ export default function ProfilePage() {
         });
         return;
     }
-
+    const playerId = new Date().toISOString();
     const newPlayer = {
-      id: new Date().toISOString(),
+      id: playerId,
       ...values,
       skills: values.skills.split(",").map((s) => s.trim()),
-      avatar: `https://picsum.photos/seed/${Math.random()}/200/200`,
+      avatar: `https://picsum.photos/seed/${playerId}/200/200`,
       verified: false,
       achievementsImage: achievementImage,
     };
     addPlayer(newPlayer);
     toast({
-      title: "Player Created",
-      description: `${values.name} has been added to the dashboard.`,
+      title: "Player Profile Created",
+      description: `Next, please upload a profile picture for ${values.name}.`,
     });
-    router.push("/dashboard");
+    router.push(`/profile/upload-avatar?playerId=${playerId}`);
   }
 
   return (
@@ -286,7 +286,7 @@ export default function ProfilePage() {
                     />
                 </CardContent>
                 <CardFooter>
-                  <Button type="submit">Create Player</Button>
+                  <Button type="submit">Create Player &amp; Next</Button>
                 </CardFooter>
               </form>
             </Form>
