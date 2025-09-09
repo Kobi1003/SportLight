@@ -35,6 +35,7 @@ import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
 import { AchievementGenerator } from "@/components/profile/achievement-generator";
 import { useState } from "react";
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 
 const playerFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -43,6 +44,8 @@ const playerFormSchema = z.object({
   location: z.string().min(1, "Location is required"),
   height: z.coerce.number().min(1, "Height is required"),
   weight: z.coerce.number().min(1, "Weight is required"),
+  gender: z.enum(["Male", "Female"]),
+  dreamClub: z.string().min(1, "Dream club is required"),
   skills: z.string().min(1, "Skills are required"),
   achievementsText: z.string().min(1, "Achievements text is required"),
 });
@@ -64,6 +67,8 @@ export default function ProfilePage() {
       location: "",
       height: undefined,
       weight: undefined,
+      gender: undefined,
+      dreamClub: "",
       skills: "",
       achievementsText: "",
     },
@@ -138,37 +143,65 @@ export default function ProfilePage() {
                     render={({ field }) => (
                       <FormItem>
                         <FormLabel>Sport</FormLabel>
-                        <FormControl>
-                          <select {...field} className="w-full p-2 border rounded-md bg-background">
-                            <option value="Football">Football</option>
-                            <option value="Basketball">Basketball</option>
-                            <option value="Tennis">Tennis</option>
-                            <option value="Cricket">Cricket</option>
-                            <option value="Long Jump">Long Jump</option>
-                            <option value="High Jump">High Jump</option>
-                            <option value="Archery">Archery</option>
-                            <option value="Shooting">Shooting</option>
-                            <option value="Badminton">Badminton</option>
-                            <option value="Javelin">Javelin</option>
-                          </select>
-                        </FormControl>
+                        <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                                <SelectTrigger>
+                                    <SelectValue placeholder="Select a sport" />
+                                </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                                <SelectItem value="Football">Football</SelectItem>
+                                <SelectItem value="Basketball">Basketball</SelectItem>
+                                <SelectItem value="Tennis">Tennis</SelectItem>
+                                <SelectItem value="Cricket">Cricket</SelectItem>
+                                <SelectItem value="Long Jump">Long Jump</SelectItem>
+                                <SelectItem value="High Jump">High Jump</SelectItem>
+                                <SelectItem value="Archery">Archery</SelectItem>
+                                <SelectItem value="Shooting">Shooting</SelectItem>
+                                <SelectItem value="Badminton">Badminton</SelectItem>
+                                <SelectItem value="Javelin">Javelin</SelectItem>
+                            </SelectContent>
+                        </Select>
                         <FormMessage />
                       </FormItem>
                     )}
                   />
-                  <FormField
-                    control={form.control}
-                    name="age"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Age</FormLabel>
-                        <FormControl>
-                          <Input type="number" placeholder="e.g. 22" {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
+                  <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                      control={form.control}
+                      name="age"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Age</FormLabel>
+                          <FormControl>
+                            <Input type="number" placeholder="e.g. 22" {...field} />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={form.control}
+                      name="gender"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel>Gender</FormLabel>
+                          <Select onValueChange={field.onChange} defaultValue={field.value}>
+                            <FormControl>
+                              <SelectTrigger>
+                                <SelectValue placeholder="Select gender" />
+                              </SelectTrigger>
+                            </FormControl>
+                            <SelectContent>
+                              <SelectItem value="Male">Male</SelectItem>
+                              <SelectItem value="Female">Female</SelectItem>
+                            </SelectContent>
+                          </Select>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
                   <FormField
                     control={form.control}
                     name="location"
@@ -210,6 +243,19 @@ export default function ProfilePage() {
                         )}
                     />
                    </div>
+                   <FormField
+                    control={form.control}
+                    name="dreamClub"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Dream Club</FormLabel>
+                        <FormControl>
+                          <Input placeholder="e.g. Manchester United" {...field} />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
                   <FormField
                     control={form.control}
                     name="skills"

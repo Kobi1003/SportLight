@@ -7,6 +7,8 @@ export type Player = {
   location: string;
   height: number;
   weight: number;
+  gender: 'Male' | 'Female';
+  dreamClub: string;
   skills: string[];
   verified: boolean;
   achievementsText: string;
@@ -23,6 +25,8 @@ export const players: Player[] = [
     location: 'Mumbai, India',
     height: 180,
     weight: 75,
+    gender: 'Male',
+    dreamClub: 'Mumbai Indians',
     skills: ['Batting', 'Pace Bowling', 'Fielding'],
     verified: true,
     achievementsText: 'A dynamic all-rounder with a knack for scoring crucial runs. I have been playing since I was 8 and have won multiple state-level tournaments.',
@@ -37,6 +41,8 @@ export const players: Player[] = [
     location: 'Hyderabad, India',
     height: 175,
     weight: 68,
+    gender: 'Female',
+    dreamClub: 'Awadhe Warriors',
     skills: ['Smash', 'Net Play', 'Drop Shot'],
     verified: true,
     achievementsText: 'Singles player with exceptional court coverage and leadership skills. Ready to take my game to the professional level.',
@@ -51,6 +57,8 @@ export const players: Player[] = [
     location: 'Kolkata, India',
     height: 185,
     weight: 80,
+    gender: 'Male',
+    dreamClub: 'FC Barcelona',
     skills: ['Dribbling', 'Passing', 'Finishing'],
     verified: false,
     achievementsText: 'Aggressive forward with a powerful shot. Seeking a club to further develop my skills and compete in the national league.',
@@ -65,6 +73,8 @@ export const players: Player[] = [
     location: 'Delhi, India',
     height: 178,
     weight: 72,
+    gender: 'Female',
+    dreamClub: 'Hyundai Archery',
     skills: ['Targeting', 'Consistency', 'Focus'],
     verified: true,
     achievementsText: 'A rock-solid archer with great precision. Captain of my university team for two consecutive years.',
@@ -79,6 +89,8 @@ export const players: Player[] = [
     location: 'Pune, India',
     height: 190,
     weight: 85,
+    gender: 'Male',
+    dreamClub: 'Athletics Federation of India',
     skills: ['Throwing Power', 'Technique', 'Run-up'],
     verified: false,
     achievementsText: 'Dominant thrower with a strong presence. I excel at achieving long distances and have a personal best of 85 meters.',
@@ -93,6 +105,8 @@ export const players: Player[] = [
     location: 'Bangalore, India',
     height: 170,
     weight: 65,
+    gender: 'Female',
+    dreamClub: 'Sania Mirza Tennis Academy',
     skills: ['Backhand', 'Slice', 'Footwork'],
     verified: true,
     achievementsText: 'A strategic player with a versatile all-court game. My two-handed backhand is my biggest weapon.',
@@ -107,6 +121,8 @@ export const players: Player[] = [
     location: 'Goa, India',
     height: 182,
     weight: 78,
+    gender: 'Male',
+    dreamClub: 'Real Madrid',
     skills: ['Pace', 'Finishing', 'Agility'],
     verified: false,
     achievementsText: 'Lightning-fast winger who loves to take on defenders. Top scorer in my youth league last season.',
@@ -121,6 +137,8 @@ export const players: Player[] = [
     location: 'Chennai, India',
     height: 168,
     weight: 62,
+    gender: 'Female',
+    dreamClub: 'Los Angeles Lakers',
     skills: ['3-Point Shooting', 'Ball Handling', 'Speed'],
     verified: true,
     achievementsText: 'Sharpshooter with deep range and quick release. Confident in my ability to spread the floor and create opportunities.',
