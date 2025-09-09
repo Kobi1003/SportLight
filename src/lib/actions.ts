@@ -1,0 +1,107 @@
+'use server';
+
+import { aiChatbot } from "@/ai/flows/ai-powered-chatbot";
+import { aiVideoChecker } from "@/ai/flows/ai-video-checker";
+import { getVideoRecordingGuidance } from "@/ai/flows/video-recording-guidance";
+import { z } from "zod";
+
+const chatSchema = z.object({
+  query: z.string(),
+});
+
+export async function handleChat(prevState: any, formData: FormData) {
+  const validatedFields = chatSchema.safeParse({
+    query: formData.get('query'),
+  });
+
+  if (!validatedFields.success) {
+    return {
+      ...prevState,
+      error: 'Invalid input.',
+    };
+  }
+
+  try {
+    const result = await aiChatbot(validatedFields.data);
+    return {
+      ...prevState,
+      response: result.response,
+      error: null,
+    };
+  } catch (error) {
+    return {
+      ...prevState,
+      response: null,
+      error: 'Failed to get response from AI.',
+    };
+  }
+}
+
+const guidanceSchema = z.object({
+    sport: z.string().min(1, 'Sport is required'),
+    skill: z.string().min(1, 'Skill is required'),
+    cameraAngle: z.string().min(1, 'Camera Angle is required'),
+    playerVisibility: z.string().min(1, 'Player Visibility is required'),
+});
+
+export async function handleVideoGuidance(prevState: any, formData: FormData) {
+    const validatedFields = guidanceSchema.safeParse(Object.fromEntries(formData.entries()));
+
+    if (!validatedFields.success) {
+        return {
+            ...prevState,
+            guidance: null,
+            error: 'All fields are required.',
+        };
+    }
+
+    try {
+        const result = await getVideoRecordingGuidance(validatedFields.data);
+        return {
+            ...prevState,
+            guidance: result.guidance,
+            error: null,
+        };
+    } catch (error) {
+        return {
+            ...prevState,
+            guidance: null,
+            error: 'Failed to get guidance from AI.',
+        };
+    }
+}
+
+const checkerSchema = z.object({
+    sport: z.string().min(1, 'Sport is required'),
+});
+
+export async function handleVideoCheck(prevState: any, formData: FormData) {
+    const validatedFields = checkerSchema.safeParse(Object.fromEntries(formData.entries()));
+
+    if (!validatedFields.success) {
+        return {
+            ...prevState,
+            analysis: null,
+            error: 'Sport is required.',
+        };
+    }
+    
+    // In a real app, you would get the video data URI from a file upload.
+    // Here we use a placeholder.
+    const dummyVideoDataUri = "data:video/mp4;base64,AAAAHGZ0eXBNNFYgAAACAGlzb21pc28yYXZjMQAAAAhmcmVlAAAAG21kYXQAAAGzABAHAAABthAz//6/AAAAM2WIhDmu0wkTc0IALgAADEQvQ3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a3a-/+F==";
+
+    try {
+        const result = await aiVideoChecker({ ...validatedFields.data, videoDataUri: dummyVideoDataUri });
+        return {
+            ...prevState,
+            analysis: result.analysis,
+            error: null,
+        };
+    } catch (error) {
+        return {
+            ...prevState,
+            analysis: null,
+            error: 'Failed to get analysis from AI.',
+        };
+    }
+}
