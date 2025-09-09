@@ -40,15 +40,15 @@ export function PlayerProfileModal({ player, open, onOpenChange }: PlayerProfile
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-lg">
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <div className="flex items-center gap-4">
-            <Avatar className="h-20 w-20 border-4 border-primary/50">
+            <Avatar className="h-16 w-16 border-4 border-primary/50">
               <AvatarImage src={player.avatar} alt={player.name} data-ai-hint="person portrait" />
               <AvatarFallback>{player.name.charAt(0)}</AvatarFallback>
             </Avatar>
             <div className="space-y-1">
-              <DialogTitle className="font-headline text-3xl">{player.name}</DialogTitle>
+              <DialogTitle className="font-headline text-2xl">{player.name}</DialogTitle>
               <DialogDescription className="flex items-center gap-2">
                 {player.sport}
                 {player.verified && (
@@ -61,64 +61,64 @@ export function PlayerProfileModal({ player, open, onOpenChange }: PlayerProfile
             </div>
           </div>
         </DialogHeader>
-        <div className="space-y-3 py-4">
-          <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-muted-foreground">
+        <div className="space-y-2 py-2">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-muted-foreground">
             <div className="flex items-center">
-              <MapPin className="mr-2 h-4 w-4" />
+              <MapPin className="mr-2 h-3 w-3" />
               <span>{player.location}</span>
             </div>
             <div className="flex items-center">
-              <Cake className="mr-2 h-4 w-4" />
+              <Cake className="mr-2 h-3 w-3" />
               <span>{player.age} years old</span>
             </div>
             <div className="flex items-center">
-              <Ruler className="mr-2 h-4 w-4" />
+              <Ruler className="mr-2 h-3 w-3" />
               <span>{player.height} cm</span>
             </div>
             <div className="flex items-center">
-              <Scale className="mr-2 h-4 w-4" />
+              <Scale className="mr-2 h-3 w-3" />
               <span>{player.weight} kg</span>
             </div>
             <div className="flex items-center">
-              <VenetianMask className="mr-2 h-4 w-4" />
+              <VenetianMask className="mr-2 h-3 w-3" />
               <span>{player.gender}</span>
             </div>
              <div className="flex items-center">
-              <Heart className="mr-2 h-4 w-4" />
+              <Heart className="mr-2 h-3 w-3" />
               <span>{player.dreamClub}</span>
             </div>
           </div>
-          <div>
-            <h4 className="font-semibold mb-2 flex items-center gap-2"><Star className="w-4 h-4 text-primary" /> Skills</h4>
-            <div className="flex flex-wrap gap-2">
+          <div className="pt-2">
+            <h4 className="font-semibold mb-1 flex items-center gap-2 text-sm"><Star className="w-4 h-4 text-primary" /> Skills</h4>
+            <div className="flex flex-wrap gap-1">
               {player.skills.map((skill) => (
-                <Badge key={skill} variant="secondary" className="bg-accent/20 text-accent-foreground">
+                <Badge key={skill} variant="secondary" className="bg-accent/20 text-accent-foreground text-xs">
                   {skill}
                 </Badge>
               ))}
             </div>
           </div>
-          <div>
-            <h4 className="font-semibold mb-2 flex items-center gap-2"><Award className="w-4 h-4 text-primary"/> Achievements</h4>
-            <div className="bg-muted/50 p-3 rounded-md space-y-2">
+          <div className="pt-2">
+            <h4 className="font-semibold mb-1 flex items-center gap-2 text-sm"><Award className="w-4 h-4 text-primary"/> Achievements</h4>
+            <div className="bg-muted/50 p-2 rounded-md space-y-2">
               {player.achievementsImage && (
                 <Image
                     src={player.achievementsImage}
                     alt="Player achievements visualization"
-                    width={300}
-                    height={225}
+                    width={250}
+                    height={188}
                     className="rounded-md object-cover w-full"
                     data-ai-hint="achievement award"
                 />
               )}
-              <p className="text-sm text-foreground/80">{player.achievementsText}</p>
+              <p className="text-xs text-foreground/80">{player.achievementsText}</p>
             </div>
           </div>
         </div>
         <DialogFooter className="sm:justify-between pt-2">
             <AlertDialog>
                 <AlertDialogTrigger asChild>
-                    <Button variant="destructive">
+                    <Button variant="destructive" size="sm">
                         <Trash2 className="mr-2 h-4 w-4" />
                         Delete Profile
                     </Button>
@@ -137,7 +137,7 @@ export function PlayerProfileModal({ player, open, onOpenChange }: PlayerProfile
                     </AlertDialogFooter>
                 </AlertDialogContent>
             </AlertDialog>
-            <Button variant="outline" onClick={() => onOpenChange(false)}>Close</Button>
+            <Button variant="outline" size="sm" onClick={() => onOpenChange(false)}>Close</Button>
         </DialogFooter>
       </DialogContent>
     </Dialog>
