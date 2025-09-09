@@ -8,9 +8,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Lightbulb, Check, Camera, PersonStanding, Clapperboard, Loader, Video as VideoIcon } from 'lucide-react';
+import { Lightbulb, Check, Clapperboard, Loader, Video as VideoIcon } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 const initialState = {
   guidance: null,
@@ -43,42 +43,82 @@ const sportCriteria = {
             "Avoid over-zooming; maintain a wide shot.",
             "Player's gear (pads, helmet, etc.) must be clearly visible.",
         ],
+        defaults: {
+            cameraAngle: "Side view, slightly elevated",
+            playerVisibility: "Bowler’s run-up, batsman stance, and full delivery visible",
+        }
     },
     "Long Jump": {
         prompt: "A video illustrating the correct camera placement for a long jump. The camera should be positioned to the side of the runway to capture the athlete's entire approach, the take-off from the board, their flight through the air, and the landing in the pit, all in one continuous frame.",
         criteria: ["Full runway must be in the frame.", "Clear view of the take-off board.", "Entire landing pit should be visible."],
+        defaults: {
+            cameraAngle: "Side of the runway",
+            playerVisibility: "Full runway, take-off board, and landing pit in frame",
+        }
     },
     "High Jump": {
         prompt: "A video showing the ideal camera angle for a high jump. The camera is placed perpendicular to the bar to clearly show whether the athlete clears it. The entire approach, the bar, and the landing mat must be visible.",
         criteria: ["Entire approach run is visible.", "The bar and landing mat are fully in frame.", "Use a camera angle perpendicular to the bar for clearance view."],
+        defaults: {
+            cameraAngle: "Perpendicular to the bar",
+            playerVisibility: "Entire approach, bar, and landing mat visible",
+        }
     },
     "Kabaddi": {
         prompt: "A video showing the recommended camera setup for a Kabaddi match. The view should be from a high angle, covering the full ground, to clearly capture the raider's movements, defensive formations, tackles, and lunges without cropping any players.",
         criteria: ["Full view of the kabaddi ground.", "Clearly captures tackles, lunges, and raids.", "Do not crop the player's limbs or torso."],
+        defaults: {
+            cameraAngle: "High angle, covering the full ground",
+            playerVisibility: "Full ground, all players, no cropping of limbs",
+        }
     },
     "Volleyball": {
         prompt: "A video diagram of the best camera position for recording volleyball. The camera should be elevated and to the side to capture the entire court, the net, and player movements, including spikes, blocks, and serves.",
         criteria: ["Entire court, including the net, is visible.", "Captures spikes and blocks effectively.", "Player's hand and arm motions are clear."],
+        defaults: {
+            cameraAngle: "Elevated and to the side",
+            playerVisibility: "Entire court, net, and player movements visible",
+        }
     },
     "Football": {
         prompt: "A video showing the correct way to film football skills. The camera angle should capture the player's interaction with the ball, their body posture during dribbling, passing, and shooting, and keep the goal area visible for shooting drills.",
         criteria: ["Clear view of ball interaction.", "Posture during dribbles, passes, and kicks.", "Goal area is visible for shooting drills."],
+        defaults: {
+            cameraAngle: "Angle capturing player's interaction with the ball",
+            playerVisibility: "Player's body posture, goal area for shooting drills visible",
+        }
     },
     "Archery": {
         prompt: "A video detailing the ideal camera setup for archery. The frame must capture both the shooter and the target. A split-screen or a side-on view is needed to see the archer's form, extension, and aiming posture clearly.",
         criteria: ["Both shooter and target are in the frame.", "Archer's extension and aiming posture are clearly visible."],
+        defaults: {
+            cameraAngle: "Side-on view or split-screen",
+            playerVisibility: "Shooter, target, extension, and aiming posture visible",
+        }
     },
      "Shooting": {
         prompt: "A video showing the correct way to film a shooter. The frame must include both the shooter and the target to judge aim and stability. Their aiming posture is key.",
         criteria: ["Both shooter and target are in the frame.", "Shooter's aiming posture is clear and stable."],
+        defaults: {
+            cameraAngle: "Side-on view",
+            playerVisibility: "Shooter and target visible in the same frame",
+        }
     },
     "Badminton": {
         prompt: "A video illustrating the proper camera angle for a badminton match, focusing on footwork. A slightly elevated, side-court view is best to see the full court, racket and wrist motions, and player movement.",
         criteria: ["Full court is visible.", "Racket and wrist motions are clear.", "Player's footwork is a primary focus."],
+        defaults: {
+            cameraAngle: "Slightly elevated, side-court view",
+            playerVisibility: "Full court, racket/wrist motions, and footwork visible",
+        }
     },
     "Javelin": {
         prompt: "A video showing the ideal camera placement for a javelin throw. It must capture the full runway, the complete throwing motion, the release, and the follow-through in one continuous shot from the side.",
         criteria: ["Full runway is visible.", "The complete throwing motion is captured.", "Release and follow-through are clearly shown."],
+        defaults: {
+            cameraAngle: "Side view of the runway",
+            playerVisibility: "Full runway, complete throwing motion, release, and follow-through",
+        }
     },
 };
 
@@ -88,7 +128,20 @@ export function VideoGuidance() {
   const [guidanceState, guidanceAction] = useFormState(handleVideoGuidance, initialState);
   const [videoState, videoAction] = useFormState(handleVideoGeneration, initialVideoState);
   const [selectedSport, setSelectedSport] = useState<Sport | ''>('');
+  
+  const [guidanceSport, setGuidanceSport] = useState<Sport | ''>('');
+  const [cameraAngle, setCameraAngle] = useState('');
+  const [playerVisibility, setPlayerVisibility] = useState('');
 
+  useEffect(() => {
+    if (guidanceSport) {
+        setCameraAngle(sportCriteria[guidanceSport].defaults.cameraAngle);
+        setPlayerVisibility(sportCriteria[guidanceSport].defaults.playerVisibility);
+    } else {
+        setCameraAngle('');
+        setPlayerVisibility('');
+    }
+  }, [guidanceSport]);
 
   return (
     <div className="grid md:grid-cols-2 gap-8 items-start">
@@ -101,7 +154,7 @@ export function VideoGuidance() {
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="sport">Sport</Label>
-              <Select name="sport" required>
+              <Select name="sport" required onValueChange={(value: Sport) => setGuidanceSport(value)}>
                 <SelectTrigger id="sport">
                   <SelectValue placeholder="Select a sport" />
                 </SelectTrigger>
@@ -118,11 +171,25 @@ export function VideoGuidance() {
             </div>
             <div className="space-y-2">
               <Label htmlFor="cameraAngle">Camera Angle</Label>
-              <Input id="cameraAngle" name="cameraAngle" placeholder="e.g., Side view, 45 degrees" required />
+              <Input 
+                id="cameraAngle" 
+                name="cameraAngle" 
+                placeholder="e.g., Side view, 45 degrees" 
+                value={cameraAngle}
+                onChange={(e) => setCameraAngle(e.target.value)}
+                required 
+              />
             </div>
             <div className="space-y-2">
               <Label htmlFor="playerVisibility">Player Visibility</Label>
-              <Input id="playerVisibility" name="playerVisibility" placeholder="e.g., Full body visible, from the waist up" required />
+              <Input 
+                id="playerVisibility" 
+                name="playerVisibility" 
+                placeholder="e.g., Full body visible, from the waist up" 
+                value={playerVisibility}
+                onChange={(e) => setPlayerVisibility(e.target.value)}
+                required 
+              />
             </div>
           </CardContent>
           <CardFooter>
@@ -173,7 +240,7 @@ export function VideoGuidance() {
                     <video src={videoState.videoUrl} controls className='w-full aspect-video bg-muted' />
                 </div>
             )}
-            {videoState.error && (
+             {videoState.error && (
                 <Alert variant="destructive">
                     <AlertTitle>Video Generation Failed</AlertTitle>
                     <AlertDescription>{videoState.error}</AlertDescription>
