@@ -52,7 +52,7 @@ const playerFormSchema = z.object({
   height: z.coerce.number().min(1, "Height is required"),
   weight: z.coerce.number().min(1, "Weight is required"),
   gender: z.enum(["Male", "Female"]),
-  dreamClub: z.string().min(1, "Dream club is required"),
+  dreamClub: z.string().optional(),
   skills: z.string().min(1, "At least one skill is required"),
   achievementsText: z.string().min(1, "Achievements text is required"),
 });
@@ -107,6 +107,7 @@ export default function ProfilePage() {
     const newPlayer = {
       id: playerId,
       ...values,
+      dreamClub: values.dreamClub || 'N/A',
       skills: values.skills.split(",").map((s) => s.trim()),
       avatar: `https://picsum.photos/seed/${playerId}/200/200`,
       verified: false,
@@ -278,7 +279,7 @@ export default function ProfilePage() {
                     name="dreamClub"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Dream Club</FormLabel>
+                        <FormLabel>Dream Club (Optional)</FormLabel>
                         <FormControl>
                           <Input placeholder="e.g. Manchester United" {...field} />
                         </FormControl>
@@ -466,5 +467,3 @@ export default function ProfilePage() {
     </div>
   );
 }
-
-    
