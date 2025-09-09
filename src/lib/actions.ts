@@ -172,7 +172,10 @@ export async function handleVideoGeneration(prevState: any, formData: FormData) 
         }
     } catch (error: any) {
         console.error(error);
-        const errorMessage = error.message || 'Failed to generate example video. The model may be unavailable.';
+        const errorMessage = error.message.includes('Project has not completed onboarding in Vertex AI') 
+            ? 'Video generation requires a Google Cloud project with billing enabled. Please set up a billed account and try again.'
+            : (error.message || 'Failed to generate example video. The model may be unavailable.');
+
         return {
             ...prevState,
             videoUrl: null,

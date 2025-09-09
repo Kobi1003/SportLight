@@ -1,30 +1,20 @@
 'use client';
 
 import { useFormState, useFormStatus } from 'react-dom';
-import { handleVideoGuidance, handleVideoGeneration } from '@/lib/actions';
+import { handleVideoGeneration } from '@/lib/actions';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Lightbulb, Check, Clapperboard, Loader, Video as VideoIcon } from 'lucide-react';
+import { Lightbulb, Check, Clapperboard, Loader, Video as VideoIcon, Film } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 import { useState, useEffect } from 'react';
-
-const initialState = {
-  guidance: null,
-  error: null,
-};
 
 const initialVideoState = {
     videoUrl: null,
     error: null,
-}
-
-function GuidanceSubmitButton() {
-  const { pending } = useFormStatus();
-  return <Button type="submit" disabled={pending}>{pending ? 'Getting Guidance...' : 'Get Guidance'}</Button>;
 }
 
 function VideoSubmitButton({ sport }: { sport: string }) {
@@ -125,96 +115,42 @@ const sportCriteria = {
 type Sport = keyof typeof sportCriteria;
 
 export function VideoGuidance() {
-  const [guidanceState, guidanceAction] = useFormState(handleVideoGuidance, initialState);
   const [videoState, videoAction] = useFormState(handleVideoGeneration, initialVideoState);
   const [selectedSport, setSelectedSport] = useState<Sport | ''>('');
-  
-  const [guidanceSport, setGuidanceSport] = useState<Sport | ''>('');
-  const [cameraAngle, setCameraAngle] = useState('');
-  const [playerVisibility, setPlayerVisibility] = useState('');
-
-  useEffect(() => {
-    if (guidanceSport) {
-        setCameraAngle(sportCriteria[guidanceSport].defaults.cameraAngle);
-        setPlayerVisibility(sportCriteria[guidanceSport].defaults.playerVisibility);
-    } else {
-        setCameraAngle('');
-        setPlayerVisibility('');
-    }
-  }, [guidanceSport]);
+  const [fileName, setFileName] = useState('');
 
   return (
     <div className="grid md:grid-cols-2 gap-8 items-start">
       <Card>
-        <form action={guidanceAction}>
           <CardHeader>
-            <CardTitle className="font-headline">AI Video Guidance</CardTitle>
-            <CardDescription>Get real-time feedback on your video recording setup.</CardDescription>
+            <CardTitle className="font-headline">Upload Your Video</CardTitle>
+            <CardDescription>Upload your video to get started. Ensure it follows the criteria for the selected sport.</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="space-y-2">
-              <Label htmlFor="sport">Sport</Label>
-              <Select name="sport" required onValueChange={(value: Sport) => setGuidanceSport(value)}>
-                <SelectTrigger id="sport">
-                  <SelectValue placeholder="Select a sport" />
-                </SelectTrigger>
-                <SelectContent>
-                    {Object.keys(sportCriteria).map(sport => (
-                         <SelectItem key={sport} value={sport}>{sport}</SelectItem>
-                    ))}
-                </SelectContent>
-              </Select>
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="skill">Skill</Label>
-              <Input id="skill" name="skill" placeholder="e.g., Free Kick, Dribbling" required />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="cameraAngle">Camera Angle</Label>
+              <Label htmlFor="video-file-guidance">Video File</Label>
               <Input 
-                id="cameraAngle" 
-                name="cameraAngle" 
-                placeholder="e.g., Side view, 45 degrees" 
-                value={cameraAngle}
-                onChange={(e) => setCameraAngle(e.target.value)}
+                id="video-file-guidance" 
+                name="video" 
+                type="file" 
+                accept="video/*"
+                onChange={(e) => setFileName(e.target.files?.[0]?.name || '')}
                 required 
               />
+               {fileName && <p className="text-xs text-muted-foreground flex items-center gap-2 pt-2"><Film className="w-4 h-4"/> Selected: {fileName}</p>}
             </div>
-            <div className="space-y-2">
-              <Label htmlFor="playerVisibility">Player Visibility</Label>
-              <Input 
-                id="playerVisibility" 
-                name="playerVisibility" 
-                placeholder="e.g., Full body visible, from the waist up" 
-                value={playerVisibility}
-                onChange={(e) => setPlayerVisibility(e.target.value)}
-                required 
-              />
+            <div className="flex flex-col items-center justify-center text-center p-8 border-2 border-dashed rounded-lg h-full bg-muted/50">
+                <Clapperboard className="w-12 h-12 text-muted-foreground" />
+                <h3 className="font-headline mt-4 text-xl font-semibold">Video Preview</h3>
+                <p className="text-muted-foreground mt-1">Your uploaded video will be shown here.</p>
             </div>
           </CardContent>
-          <CardFooter>
-            <GuidanceSubmitButton />
-          </CardFooter>
-        </form>
       </Card>
       
       <div className="space-y-4">
-        {guidanceState.guidance && (
-          <Alert className="border-primary text-primary">
-            <Lightbulb className="h-4 w-4 !text-primary" />
-            <AlertTitle className="font-headline">AI Suggestion</AlertTitle>
-            <AlertDescription>{guidanceState.guidance}</AlertDescription>
-          </Alert>
-        )}
-        {guidanceState.error && (
-          <Alert variant="destructive">
-            <AlertTitle>Error</AlertTitle>
-            <AlertDescription>{guidanceState.error}</AlertDescription>
-          </Alert>
-        )}
         <Card className="bg-card/50">
           <CardHeader>
-            <CardTitle className="font-headline">Sport-Specific Criteria</CardTitle>
+            <CardTitle className="font-headline">Sport-Specific Criteria & Example</CardTitle>
             <CardDescription>Follow these guidelines and watch the example video.</CardDescription>
           </CardHeader>
           <CardContent>
