@@ -3,7 +3,7 @@ import type { Player } from "@/lib/mock-data";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, MapPin, Cake, Star, Award, Ruler, Scale, Heart, VenetianMask, Trash2, ShieldAlert } from "lucide-react";
+import { CheckCircle, MapPin, Cake, Star, Award, Ruler, Scale, Heart, VenetianMask, Trash2, ShieldAlert, AtSign } from "lucide-react";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import {
@@ -89,6 +89,10 @@ export function PlayerProfileModal({ player, open, onOpenChange }: PlayerProfile
              <div className="flex items-center">
               <Heart className="mr-2 h-3 w-3" />
               <span>{player.dreamClub}</span>
+            </div>
+             <div className="flex items-center col-span-2">
+              <AtSign className="mr-2 h-3 w-3" />
+              <span>{player.creatorEmail}</span>
             </div>
           </div>
           <div className="pt-2">
