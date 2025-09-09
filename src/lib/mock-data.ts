@@ -2,7 +2,7 @@ export type Player = {
   id: string;
   name: string;
   avatar: string;
-  sport: 'Football' | 'Basketball' | 'Tennis' | 'Cricket' | 'Long Jump' | 'High Jump' | 'Archery' | 'Shooting' | 'Badminton' | 'Javelin';
+  sport: 'Football' | 'Basketball' | 'Tennis' | 'Cricket' | 'Long Jump' | 'High Jump' | 'Archery' | 'Shooting' | 'Badminton' | 'Javelin' | 'Kabaddi' | 'Volleyball';
   age: number;
   location: string;
   height: number;

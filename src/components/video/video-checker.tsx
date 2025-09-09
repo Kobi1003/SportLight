@@ -51,6 +51,8 @@ export function VideoChecker() {
                     <SelectItem value="Shooting">Shooting</SelectItem>
                     <SelectItem value="Badminton">Badminton</SelectItem>
                     <SelectItem value="Javelin">Javelin</SelectItem>
+                    <SelectItem value="Kabaddi">Kabaddi</SelectItem>
+                    <SelectItem value="Volleyball">Volleyball</SelectItem>
                 </SelectContent>
               </Select>
             </div>

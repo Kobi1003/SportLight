@@ -4,6 +4,7 @@ import { aiChatbot } from "@/ai/flows/ai-powered-chatbot";
 import { aiVideoChecker } from "@/ai/flows/ai-video-checker";
 import { getVideoRecordingGuidance } from "@/ai/flows/video-recording-guidance";
 import { generateAchievementImage } from "@/ai/flows/generate-achievement-image";
+import { generateSportsVideo } from "@/ai/flows/generate-sports-video";
 import { z } from "zod";
 
 const chatSchema = z.object({
@@ -142,5 +143,39 @@ export async function handleAchievementImage(prevState: any, formData: FormData)
             imageUrl: null,
             error: 'Failed to generate image. Please try again.',
         };
+    }
+}
+
+
+const videoGenerationSchema = z.object({
+    prompt: z.string().min(1, 'Prompt is required.'),
+    sport: z.string().min(1, 'Sport is required.'),
+});
+
+export async function handleVideoGeneration(prevState: any, formData: FormData) {
+    const validatedFields = videoGenerationSchema.safeParse(Object.fromEntries(formData.entries()));
+    
+    if (!validatedFields.success) {
+        return {
+            ...prevState,
+            videoUrl: null,
+            error: 'A prompt is required to generate a video.',
+        };
+    }
+
+    try {
+        const result = await generateSportsVideo({prompt: validatedFields.data.prompt});
+        return {
+            ...prevState,
+            videoUrl: result.videoUrl,
+            error: null,
+        }
+    } catch (error: any) {
+        console.error(error);
+        return {
+            ...prevState,
+            videoUrl: null,
+            error: error.message || 'Failed to generate video. The model may be unavailable.',
+        }
     }
 }

@@ -40,7 +40,7 @@ import { MOCK_USER_EMAIL } from "@/lib/mock-data";
 
 const playerFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  sport: z.enum(["Football", "Basketball", "Tennis", "Cricket", "Long Jump", "High Jump", "Archery", "Shooting", "Badminton", "Javelin"]),
+  sport: z.enum(["Football", "Basketball", "Tennis", "Cricket", "Long Jump", "High Jump", "Archery", "Shooting", "Badminton", "Javelin", "Kabaddi", "Volleyball"]),
   age: z.coerce.number().min(1, "Age is required"),
   location: z.string().min(1, "Location is required"),
   height: z.coerce.number().min(1, "Height is required"),
@@ -162,6 +162,8 @@ export default function ProfilePage() {
                                 <SelectItem value="Shooting">Shooting</SelectItem>
                                 <SelectItem value="Badminton">Badminton</SelectItem>
                                 <SelectItem value="Javelin">Javelin</SelectItem>
+                                <SelectItem value="Kabaddi">Kabaddi</SelectItem>
+                                <SelectItem value="Volleyball">Volleyball</SelectItem>
                             </SelectContent>
                         </Select>
                         <FormMessage />
