@@ -172,10 +172,18 @@ export async function handleVideoGeneration(prevState: any, formData: FormData) 
         }
     } catch (error: any) {
         console.error(error);
+        const errorMessage = error.message || 'Failed to generate video. The model may be unavailable.';
+        if (errorMessage.includes("billing")) {
+            return {
+                ...prevState,
+                videoUrl: null,
+                error: 'Video generation is not available. Please ensure you have a GCP project with billing enabled to use this feature.'
+            }
+        }
         return {
             ...prevState,
             videoUrl: null,
-            error: error.message || 'Failed to generate video. The model may be unavailable.',
+            error: errorMessage,
         }
     }
 }

@@ -9,8 +9,6 @@
 import { ai } from '@/ai/genkit';
 import { z } from 'genkit';
 import { googleAI } from '@genkit-ai/googleai';
-import * as fs from 'fs';
-import { Readable } from 'stream';
 
 const GenerateSportsVideoInputSchema = z.object({
   prompt: z.string().describe('A descriptive prompt for the sports video to generate.'),
@@ -34,12 +32,8 @@ const generateSportsVideoFlow = ai.defineFlow(
   },
   async ({ prompt }) => {
     let { operation } = await ai.generate({
-      model: googleAI.model('veo-2.0-generate-001'),
+      model: googleAI.model('veo-3.0-generate-preview'),
       prompt: prompt,
-      config: {
-        durationSeconds: 5,
-        aspectRatio: '16:9',
-      },
     });
 
     if (!operation) {
@@ -60,7 +54,9 @@ const generateSportsVideoFlow = ai.defineFlow(
     if (!videoPart || !videoPart.media) {
       throw new Error('Failed to find the generated video in the operation result');
     }
-
+    
+    // The video URL requires an API key to access, we need to fetch it server-side
+    // and convert it to a data URI.
     const response = await fetch(
         `${videoPart.media.url}&key=${process.env.GEMINI_API_KEY}`
     );
