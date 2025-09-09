@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useForm } from "react-hook-form";
@@ -37,7 +38,11 @@ import { AchievementGenerator } from "@/components/profile/achievement-generator
 import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { MOCK_USER_EMAIL, ALL_SPORTS, PerformanceMetric } from "@/lib/mock-data";
-import { PlusCircle, Trash2 } from "lucide-react";
+import { PlusCircle, Trash2, CalendarIcon } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Calendar } from "@/components/ui/calendar";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
 
 const playerFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -362,7 +367,7 @@ export default function ProfilePage() {
           </Card>
         </TabsContent>
         <TabsContent value="club">
-          <Card className="max-w-lg mx-auto">
+          <Card className="max-w-xl mx-auto">
             <CardHeader>
               <CardTitle className="font-headline">Club Registration</CardTitle>
               <CardDescription>
@@ -370,19 +375,87 @@ export default function ProfilePage() {
               </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="club-name">Club Name</Label>
+               <div className="space-y-2">
+                <Label htmlFor="club-name">Name of the Club</Label>
                 <Input id="club-name" placeholder="e.g., Mumbai Indians" />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="criteria">Player Selection Criteria</Label>
-                <Textarea id="criteria" placeholder="Describe the type of players you are looking for..." />
+                <Label htmlFor="address">Registered Address</Label>
+                <Textarea id="address" placeholder="Enter the club's registered address" />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="verification">Verification Documents</Label>
-                <Input id="verification" type="file" />
-                <p className="text-xs text-muted-foreground">Upload official documents for club verification.</p>
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="space-y-2">
+                  <Label htmlFor="foundation-date">Club Foundation Date</Label>
+                   <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-full justify-start text-left font-normal",
+                            !form.watch('name') && "text-muted-foreground" // a trick to keep a consistent example
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {/* Add a date state if you want to show it here */}
+                          <span>Pick a date</span>
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0">
+                        <Calendar
+                          mode="single"
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                </div>
+                 <div className="space-y-2">
+                    <Label htmlFor="registration-date">Date</Label>
+                    <Input id="registration-date" type="text" value={format(new Date(), 'PPP')} readOnly disabled />
+                </div>
               </div>
+
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 <div className="space-y-2">
+                  <Label htmlFor="contact-person">Contact Person</Label>
+                  <Input id="contact-person" placeholder="e.g., Anshul Gupta" />
+                </div>
+                 <div className="space-y-2">
+                  <Label htmlFor="mobile">Mobile No.</Label>
+                  <Input id="mobile" type="tel" placeholder="+91 98765 43210" />
+                </div>
+              </div>
+               <div className="space-y-2">
+                <Label htmlFor="email">Email</Label>
+                <Input id="email" type="email" placeholder="contact@mumbaiindians.com" />
+              </div>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div className="space-y-2">
+                        <Label htmlFor="total-players">Total No. of Players</Label>
+                        <Input id="total-players" type="number" placeholder="e.g., 25" />
+                    </div>
+                    <div className="space-y-2">
+                        <Label htmlFor="total-staff">Coaches and Support Staff</Label>
+                        <Input id="total-staff" type="number" placeholder="e.g., 10" />
+                    </div>
+                </div>
+
+               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                 <div className="space-y-2">
+                    <Label htmlFor="affiliation-docs">Affiliation Documents</Label>
+                    <Input id="affiliation-docs" type="file" />
+                    <p className="text-xs text-muted-foreground">Upload affiliation proof.</p>
+                  </div>
+                   <div className="space-y-2">
+                    <Label htmlFor="club-logo">Club Stamp (or Logo)</Label>
+                    <Input id="club-logo" type="file" accept="image/*" />
+                     <p className="text-xs text-muted-foreground">Upload the club's official logo.</p>
+                  </div>
+              </div>
+                <div className="space-y-2">
+                    <Label htmlFor="signature">Signature</Label>
+                    <Input id="signature" type="file" accept="image/*" />
+                    <p className="text-xs text-muted-foreground">Upload an image of the signature.</p>
+                </div>
             </CardContent>
             <CardFooter>
               <Button>Register Club</Button>
@@ -393,3 +466,5 @@ export default function ProfilePage() {
     </div>
   );
 }
+
+    
