@@ -8,6 +8,7 @@ import {
 import { Header } from "@/components/layout/header";
 import { MainSidebar } from "@/components/layout/main-sidebar";
 import { Chatbot } from "@/components/chatbot/chatbot";
+import { PlayersProvider } from "@/hooks/use-players";
 
 export default function AppLayout({
   children,
@@ -15,16 +16,18 @@ export default function AppLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <SidebarProvider>
-      <MainSidebar />
-      <SidebarRail />
-      <SidebarInset>
-        <Header />
-        <main className="flex-1 p-4 md:p-6 lg:p-8">
-            {children}
-        </main>
-        <Chatbot />
-      </SidebarInset>
-    </SidebarProvider>
+    <PlayersProvider>
+      <SidebarProvider>
+        <MainSidebar />
+        <SidebarRail />
+        <SidebarInset>
+          <Header />
+          <main className="flex-1 p-4 md:p-6 lg:p-8">
+              {children}
+          </main>
+          <Chatbot />
+        </SidebarInset>
+      </SidebarProvider>
+    </PlayersProvider>
   );
 }
