@@ -36,7 +36,8 @@ import { useToast } from "@/hooks/use-toast";
 import { AchievementGenerator } from "@/components/profile/achievement-generator";
 import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MOCK_USER_EMAIL, ALL_SPORTS } from "@/lib/mock-data";
+import { MOCK_USER_EMAIL, ALL_SPORTS, PerformanceMetric } from "@/lib/mock-data";
+import { PlusCircle, Trash2 } from "lucide-react";
 
 const playerFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -57,6 +58,7 @@ export default function ProfilePage() {
   const { toast } = useToast();
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
   const [referenceImage, setReferenceImage] = useState<string | null>(null);
+  const [performanceData, setPerformanceData] = useState<PerformanceMetric[]>([]);
 
 
   const form = useForm<z.infer<typeof playerFormSchema>>({
@@ -105,6 +107,7 @@ export default function ProfilePage() {
       verified: false,
       achievementsImage: achievementImage,
       creatorEmail: MOCK_USER_EMAIL,
+      performanceData: performanceData,
     };
     addPlayer(newPlayer);
     toast({
@@ -113,6 +116,22 @@ export default function ProfilePage() {
     });
     router.push(`/profile/upload-avatar?playerId=${playerId}`);
   }
+  
+  const handleAddMetric = () => {
+    setPerformanceData([...performanceData, { metric: '', value: 0, unit: '' }]);
+  };
+
+  const handleRemoveMetric = (index: number) => {
+    const newData = [...performanceData];
+    newData.splice(index, 1);
+    setPerformanceData(newData);
+  };
+
+  const handleMetricChange = (index: number, field: keyof PerformanceMetric, value: string | number) => {
+    const newData = [...performanceData];
+    (newData[index] as any)[field] = value;
+    setPerformanceData(newData);
+  };
 
   return (
     <div className="container mx-auto">
@@ -121,8 +140,9 @@ export default function ProfilePage() {
             <p className="text-muted-foreground">Create and manage your player or club profile.</p>
         </div>
       <Tabs defaultValue="player" className="w-full">
-        <TabsList className="grid w-full grid-cols-2 max-w-lg mx-auto">
+        <TabsList className="grid w-full grid-cols-3 max-w-2xl mx-auto">
           <TabsTrigger value="player">Player Profile</TabsTrigger>
+          <TabsTrigger value="performance">Performance</TabsTrigger>
           <TabsTrigger value="club">Club Registration</TabsTrigger>
         </TabsList>
         <TabsContent value="player">
@@ -295,6 +315,50 @@ export default function ProfilePage() {
                 </CardFooter>
               </form>
             </Form>
+          </Card>
+        </TabsContent>
+         <TabsContent value="performance">
+          <Card className="max-w-lg mx-auto">
+            <CardHeader>
+              <CardTitle className="font-headline">Performance Metrics</CardTitle>
+              <CardDescription>
+                Add key performance indicators for your selected sport. This helps clubs benchmark your abilities.
+              </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              {performanceData.map((metric, index) => (
+                <div key={index} className="grid grid-cols-12 gap-2 items-center">
+                  <Input 
+                    placeholder="Metric Name" 
+                    value={metric.metric}
+                    onChange={(e) => handleMetricChange(index, 'metric', e.target.value)}
+                    className="col-span-5"
+                  />
+                  <Input 
+                    type="number" 
+                    placeholder="Value" 
+                    value={metric.value}
+                    onChange={(e) => handleMetricChange(index, 'value', parseFloat(e.target.value))}
+                    className="col-span-3"
+                  />
+                  <Input 
+                    placeholder="Unit" 
+                    value={metric.unit}
+                    onChange={(e) => handleMetricChange(index, 'unit', e.target.value)}
+                    className="col-span-3"
+                  />
+                  <Button variant="ghost" size="icon" onClick={() => handleRemoveMetric(index)} className="col-span-1">
+                    <Trash2 className="h-4 w-4 text-destructive" />
+                  </Button>
+                </div>
+              ))}
+              <Button variant="outline" onClick={handleAddMetric}>
+                <PlusCircle className="mr-2 h-4 w-4" /> Add Metric
+              </Button>
+            </CardContent>
+             <CardFooter>
+                <p className="text-xs text-muted-foreground">This data will be saved with the player profile.</p>
+              </CardFooter>
           </Card>
         </TabsContent>
         <TabsContent value="club">

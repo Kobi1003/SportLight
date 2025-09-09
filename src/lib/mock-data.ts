@@ -2,6 +2,12 @@ export const ALL_SPORTS = ['Football', 'Basketball', 'Tennis', 'Cricket', 'Long 
 
 export type Sport = (typeof ALL_SPORTS)[number];
 
+export type PerformanceMetric = {
+  metric: string;
+  value: number;
+  unit: string;
+};
+
 export type Player = {
   id: string;
   name: string;
@@ -18,6 +24,7 @@ export type Player = {
   achievementsText: string;
   achievementsImage: string;
   creatorEmail: string; // Added to simulate ownership
+  performanceData?: PerformanceMetric[];
 };
 
 // Mock logged-in user email
@@ -39,7 +46,11 @@ export const players: Player[] = [
     verified: true,
     achievementsText: 'A dynamic all-rounder with a knack for scoring crucial runs. I have been playing since I was 8 and have won multiple state-level tournaments.',
     achievementsImage: 'https://picsum.photos/seed/achievement1/400/300',
-    creatorEmail: 'aarav@example.com'
+    creatorEmail: 'aarav@example.com',
+    performanceData: [
+        { metric: 'Batting Average', value: 45.5, unit: '' },
+        { metric: 'Top Bowling Speed', value: 140, unit: 'kph' },
+    ]
   },
   {
     id: '2',
@@ -56,7 +67,11 @@ export const players: Player[] = [
     verified: true,
     achievementsText: 'Singles player with exceptional court coverage and leadership skills. Ready to take my game to the professional level.',
     achievementsImage: 'https://picsum.photos/seed/achievement2/400/300',
-    creatorEmail: 'priya@example.com'
+    creatorEmail: 'priya@example.com',
+    performanceData: [
+        { metric: 'Smash Speed', value: 280, unit: 'kph' },
+        { metric: 'Court Sprint', value: 4.2, unit: 's' },
+    ]
   },
   {
     id: '3',

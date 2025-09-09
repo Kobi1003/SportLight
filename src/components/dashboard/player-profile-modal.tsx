@@ -1,9 +1,8 @@
-
 import type { Player } from "@/lib/mock-data";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, MapPin, Cake, Star, Award, Ruler, Scale, Heart, VenetianMask, Trash2, ShieldAlert, AtSign } from "lucide-react";
+import { CheckCircle, MapPin, Cake, Star, Award, Ruler, Scale, Heart, VenetianMask, Trash2, ShieldAlert, AtSign, BarChartHorizontal, Zap, StarHalf, Verified } from "lucide-react";
 import Image from "next/image";
 import { Button } from "../ui/button";
 import {
@@ -19,7 +18,7 @@ import {
 } from "@/components/ui/alert-dialog"
 import { usePlayers } from "@/hooks/use-players";
 import { MOCK_USER_EMAIL } from "@/lib/mock-data";
-
+import { Progress } from "../ui/progress";
 
 interface PlayerProfileModalProps {
   player: Player | null;
@@ -27,12 +26,27 @@ interface PlayerProfileModalProps {
   onOpenChange: (open: boolean) => void;
 }
 
+// Mock benchmark data for demonstration
+const benchmarks = {
+    'Football': { 'Sprint Speed': { value: 30, unit: 'km/h', higherIsBetter: true } },
+    'Cricket': { 'Top Bowling Speed': { value: 130, unit: 'kph', higherIsBetter: true } },
+};
+
+const getPerformanceScore = (player: Player): number => {
+    if (!player.performanceData || player.performanceData.length === 0) return 0;
+    // Simple scoring logic for demo. A real app would have a more complex system.
+    return player.performanceData.reduce((acc, metric) => acc + (metric.value / 10), 0) + player.skills.length;
+}
+
+
 export function PlayerProfileModal({ player, open, onOpenChange }: PlayerProfileModalProps) {
   const { deletePlayer } = usePlayers();
 
   if (!player) return null;
 
   const isOwner = player.creatorEmail === MOCK_USER_EMAIL;
+  const score = getPerformanceScore(player);
+
 
   const handleDelete = () => {
     if (player && isOwner) {
@@ -41,9 +55,23 @@ export function PlayerProfileModal({ player, open, onOpenChange }: PlayerProfile
     }
   };
 
+  const getBenchmark = (sport: any, metric: string) => {
+    // @ts-ignore
+    return benchmarks[sport]?.[metric] || null;
+  }
+
+  const getBadge = (score: number) => {
+    if (score > 30) return { icon: <Verified className="w-4 h-4 text-blue-400" />, label: 'Elite Performer' };
+    if (score > 15) return { icon: <Star className="w-4 h-4 text-amber-400" />, label: 'Rising Star' };
+    return { icon: <StarHalf className="w-4 h-4 text-orange-400" />, label: 'Promising Talent' };
+  }
+  
+  const badge = getBadge(score);
+
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[480px]">
+      <DialogContent className="sm:max-w-xl">
         <DialogHeader>
           <div className="flex items-center gap-4">
             <Avatar className="h-16 w-16 border-4 border-primary/50">
@@ -52,19 +80,23 @@ export function PlayerProfileModal({ player, open, onOpenChange }: PlayerProfile
             </Avatar>
             <div className="space-y-1">
               <DialogTitle className="font-headline text-2xl">{player.name}</DialogTitle>
-              <DialogDescription className="flex items-center gap-2">
-                {player.sport}
+              <DialogDescription className="flex items-center gap-4">
+                <span>{player.sport}</span>
                 {player.verified && (
                   <Badge variant="outline" className="border-primary text-primary">
                     <CheckCircle className="mr-1 h-3 w-3" />
                     Verified
                   </Badge>
                 )}
+                 <Badge variant="secondary" className="bg-purple-600/20 text-purple-300 border-purple-500">
+                    {badge.icon}
+                    {badge.label}
+                 </Badge>
               </DialogDescription>
             </div>
           </div>
         </DialogHeader>
-        <div className="space-y-2 py-2">
+        <div className="space-y-4 py-2 max-h-[60vh] overflow-y-auto pr-4">
           <div className="grid grid-cols-2 gap-x-4 gap-y-1 text-xs text-muted-foreground">
             <div className="flex items-center">
               <MapPin className="mr-2 h-3 w-3" />
@@ -96,7 +128,7 @@ export function PlayerProfileModal({ player, open, onOpenChange }: PlayerProfile
             </div>
           </div>
           <div className="pt-2">
-            <h4 className="font-semibold mb-1 flex items-center gap-2 text-sm"><Star className="w-4 h-4 text-primary" /> Skills</h4>
+            <h4 className="font-semibold mb-2 flex items-center gap-2 text-sm"><Star className="w-4 h-4 text-primary" /> Skills</h4>
             <div className="flex flex-wrap gap-1">
               {player.skills.map((skill) => (
                 <Badge key={skill} variant="secondary" className="bg-accent/20 text-accent-foreground text-xs">
@@ -105,8 +137,31 @@ export function PlayerProfileModal({ player, open, onOpenChange }: PlayerProfile
               ))}
             </div>
           </div>
+           {player.performanceData && player.performanceData.length > 0 && (
+             <div className="pt-2">
+                <h4 className="font-semibold mb-2 flex items-center gap-2 text-sm"><BarChartHorizontal className="w-4 h-4 text-primary"/> Performance Data</h4>
+                <div className="space-y-3">
+                    {player.performanceData.map((data) => {
+                        const benchmark = getBenchmark(player.sport, data.metric);
+                        const progress = benchmark ? Math.min((data.value / benchmark.value) * 100, 100) : 0;
+                        return (
+                            <div key={data.metric}>
+                                <div className="flex justify-between items-baseline mb-1">
+                                    <span className="text-xs font-medium">{data.metric}</span>
+                                    <span className="text-xs text-muted-foreground">
+                                        Your's: {data.value} {data.unit}
+                                        {benchmark && ` / Avg: ${benchmark.value} ${benchmark.unit}`}
+                                    </span>
+                                </div>
+                                {benchmark && <Progress value={progress} className="h-2" />}
+                            </div>
+                        )
+                    })}
+                </div>
+             </div>
+           )}
           <div className="pt-2">
-            <h4 className="font-semibold mb-1 flex items-center gap-2 text-sm"><Award className="w-4 h-4 text-primary"/> Achievements</h4>
+            <h4 className="font-semibold mb-2 flex items-center gap-2 text-sm"><Award className="w-4 h-4 text-primary"/> Achievements</h4>
             <div className="bg-muted/50 p-2 rounded-md space-y-2">
               {player.achievementsImage && (
                 <Image

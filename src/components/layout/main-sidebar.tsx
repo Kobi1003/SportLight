@@ -5,6 +5,7 @@ import {
   UserCircle,
   BotMessageSquare,
   Trophy,
+  BarChart3,
 } from "lucide-react";
 
 import {
@@ -20,7 +21,7 @@ import { cn } from "@/lib/utils";
 
 export function MainSidebar() {
   const pathname = usePathname();
-  const isActive = (path: string) => pathname === path;
+  const isActive = (path: string) => pathname.startsWith(path);
 
   return (
     <Sidebar collapsible="icon" side="left" variant="sidebar" className="border-r">
@@ -50,6 +51,18 @@ export function MainSidebar() {
               <Link href="/profile">
                 <UserCircle />
                 <span>Profile</span>
+              </Link>
+            </SidebarMenuButton>
+          </SidebarMenuItem>
+           <SidebarMenuItem>
+            <SidebarMenuButton
+              asChild
+              isActive={isActive("/leaderboard")}
+              tooltip={{ children: "Leaderboard" }}
+            >
+              <Link href="/leaderboard">
+                <Trophy />
+                <span>Leaderboard</span>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
