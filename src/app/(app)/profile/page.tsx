@@ -94,7 +94,7 @@ export default function ProfilePage() {
       avatar: `https://picsum.photos/seed/${playerId}/200/200`,
       verified: false,
       achievementsImage: achievementImage,
-      creatorEmail: MOCK_USER_EMAIL, // Assign the mock user's email
+      creatorEmail: MOCK_USER_EMAIL,
     };
     addPlayer(newPlayer);
     toast({
