@@ -47,7 +47,7 @@ const playerFormSchema = z.object({
   weight: z.coerce.number().min(1, "Weight is required"),
   gender: z.enum(["Male", "Female"]),
   dreamClub: z.string().min(1, "Dream club is required"),
-  skills: z.string().min(1, "Skills are required"),
+  skills: z.string().min(1, "At least one skill is required"),
   achievementsText: z.string().min(1, "Achievements text is required"),
 });
 
@@ -77,6 +77,16 @@ export default function ProfilePage() {
 
   function onSubmit(values: z.infer<typeof playerFormSchema>) {
     const achievementImage = generatedImage || referenceImage;
+
+    if (!values.skills.trim()) {
+        toast({
+            variant: "destructive",
+            title: "Skills required",
+            description: "At least one skill is required.",
+        });
+        form.setError("skills", { message: "At least one skill is required" });
+        return;
+    }
 
     if (!achievementImage) {
         toast({
