@@ -38,7 +38,7 @@ import { useState } from "react";
 
 const playerFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  sport: z.enum(["Football", "Basketball", "Tennis"]),
+  sport: z.enum(["Football", "Basketball", "Tennis", "Cricket", "Long Jump", "High Jump", "Archery", "Shooting", "Badminton", "Javelin"]),
   age: z.coerce.number().min(1, "Age is required"),
   location: z.string().min(1, "Location is required"),
   skills: z.string().min(1, "Skills are required"),
@@ -139,6 +139,13 @@ export default function ProfilePage() {
                             <option value="Football">Football</option>
                             <option value="Basketball">Basketball</option>
                             <option value="Tennis">Tennis</option>
+                            <option value="Cricket">Cricket</option>
+                            <option value="Long Jump">Long Jump</option>
+                            <option value="High Jump">High Jump</option>
+                            <option value="Archery">Archery</option>
+                            <option value="Shooting">Shooting</option>
+                            <option value="Badminton">Badminton</option>
+                            <option value="Javelin">Javelin</option>
                           </select>
                         </FormControl>
                         <FormMessage />
