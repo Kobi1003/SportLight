@@ -3,17 +3,19 @@
 import { players as initialPlayers } from '@/lib/mock-data';
 import { PlayerDashboard } from '@/components/dashboard/player-dashboard';
 import { usePlayers } from '@/hooks/use-players';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function DashboardPage() {
   const { players, setPlayers } = usePlayers();
+  const [isInitialLoad, setIsInitialLoad] = useState(true);
 
   useEffect(() => {
-    // Load initial players if the player list is empty
-    if (players.length === 0) {
+    // Load initial players only once if the player list is empty
+    if (isInitialLoad && players.length === 0) {
       setPlayers(initialPlayers);
+      setIsInitialLoad(false);
     }
-  }, [players, setPlayers]);
+  }, [players, setPlayers, isInitialLoad]);
 
   return (
     <div className="container mx-auto">
