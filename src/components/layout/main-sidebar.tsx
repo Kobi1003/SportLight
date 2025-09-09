@@ -30,46 +30,40 @@ export function MainSidebar() {
       <SidebarContent>
         <SidebarMenu>
           <SidebarMenuItem>
-            <Link href="/dashboard" legacyBehavior passHref>
-              <SidebarMenuButton
-                asChild
-                isActive={isActive("/dashboard")}
-                tooltip={{ children: "Dashboard" }}
-              >
-                <a>
-                  <LayoutDashboard />
-                  <span>Dashboard</span>
-                </a>
-              </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton
+              asChild
+              isActive={isActive("/dashboard")}
+              tooltip={{ children: "Dashboard" }}
+            >
+              <Link href="/dashboard">
+                <LayoutDashboard />
+                <span>Dashboard</span>
+              </Link>
+            </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <Link href="/profile" legacyBehavior passHref>
-              <SidebarMenuButton
-                asChild
-                isActive={isActive("/profile")}
-                tooltip={{ children: "Profile" }}
-              >
-                <a>
-                  <UserCircle />
-                  <span>Profile</span>
-                </a>
-              </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton
+              asChild
+              isActive={isActive("/profile")}
+              tooltip={{ children: "Profile" }}
+            >
+              <Link href="/profile">
+                <UserCircle />
+                <span>Profile</span>
+              </Link>
+            </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <Link href="/tools" legacyBehavior passHref>
-              <SidebarMenuButton
-                asChild
-                isActive={isActive("/tools")}
-                tooltip={{ children: "AI Tools" }}
-              >
-                <a>
-                  <BotMessageSquare />
-                  <span>AI Tools</span>
-                </a>
-              </SidebarMenuButton>
-            </Link>
+            <SidebarMenuButton
+              asChild
+              isActive={isActive("/tools")}
+              tooltip={{ children: "AI Tools" }}
+            >
+              <Link href="/tools">
+                <BotMessageSquare />
+                <span>AI Tools</span>
+              </Link>
+            </SidebarMenuButton>
           </SidebarMenuItem>
         </SidebarMenu>
       </SidebarContent>
