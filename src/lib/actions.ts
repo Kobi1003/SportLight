@@ -152,34 +152,29 @@ const videoGenerationSchema = z.object({
     sport: z.string().min(1, 'Sport is required.'),
 });
 
+// This function now generates an image instead of a video.
 export async function handleVideoGeneration(prevState: any, formData: FormData) {
     const validatedFields = videoGenerationSchema.safeParse(Object.fromEntries(formData.entries()));
     
     if (!validatedFields.success) {
         return {
             ...prevState,
-            videoUrl: null,
-            error: 'A prompt is required to generate a video.',
+            videoUrl: null, // Still named videoUrl in state for minimal changes
+            error: 'A prompt is required to generate an example.',
         };
     }
 
     try {
-        const result = await generateSportsVideo({prompt: validatedFields.data.prompt});
+        // We reuse the achievement image generator, but just for the text-to-image part.
+        const result = await generateAchievementImage({text: validatedFields.data.prompt});
         return {
             ...prevState,
-            videoUrl: result.videoUrl,
+            videoUrl: result.imageUrl, // The result is an image URL
             error: null,
         }
     } catch (error: any) {
         console.error(error);
-        const errorMessage = error.message || 'Failed to generate video. The model may be unavailable.';
-        if (errorMessage.includes("billing")) {
-            return {
-                ...prevState,
-                videoUrl: null,
-                error: 'Video generation is not available. Please ensure you have a GCP project with billing enabled to use this feature.'
-            }
-        }
+        const errorMessage = error.message || 'Failed to generate example image. The model may be unavailable.';
         return {
             ...prevState,
             videoUrl: null,
