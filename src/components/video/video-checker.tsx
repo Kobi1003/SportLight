@@ -8,7 +8,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Bot, FileCheck2, Film } from 'lucide-react';
+import { Bot, FileCheck2, Film, Loader } from 'lucide-react';
 import { useState } from 'react';
 
 const initialState = {
@@ -18,7 +18,7 @@ const initialState = {
 
 function SubmitButton() {
   const { pending } = useFormStatus();
-  return <Button type="submit" disabled={pending}>{pending ? 'Analyzing...' : 'Analyze Video'}</Button>;
+  return <Button type="submit" disabled={pending}>{pending ? <><Loader className="w-4 h-4 mr-2 animate-spin"/>Analyzing...</> : 'Analyze Video'}</Button>;
 }
 
 export function VideoChecker() {
