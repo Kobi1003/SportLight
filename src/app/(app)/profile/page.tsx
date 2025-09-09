@@ -36,11 +36,11 @@ import { useToast } from "@/hooks/use-toast";
 import { AchievementGenerator } from "@/components/profile/achievement-generator";
 import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { MOCK_USER_EMAIL } from "@/lib/mock-data";
+import { MOCK_USER_EMAIL, ALL_SPORTS } from "@/lib/mock-data";
 
 const playerFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
-  sport: z.enum(["Football", "Basketball", "Tennis", "Cricket", "Long Jump", "High Jump", "Archery", "Shooting", "Badminton", "Javelin", "Kabaddi", "Volleyball"]),
+  sport: z.enum(ALL_SPORTS),
   age: z.coerce.number().min(1, "Age is required"),
   location: z.string().min(1, "Location is required"),
   height: z.coerce.number().min(1, "Height is required"),
@@ -152,18 +152,9 @@ export default function ProfilePage() {
                                 </SelectTrigger>
                             </FormControl>
                             <SelectContent>
-                                <SelectItem value="Football">Football</SelectItem>
-                                <SelectItem value="Basketball">Basketball</SelectItem>
-                                <SelectItem value="Tennis">Tennis</SelectItem>
-                                <SelectItem value="Cricket">Cricket</SelectItem>
-                                <SelectItem value="Long Jump">Long Jump</SelectItem>
-                                <SelectItem value="High Jump">High Jump</SelectItem>
-                                <SelectItem value="Archery">Archery</SelectItem>
-                                <SelectItem value="Shooting">Shooting</SelectItem>
-                                <SelectItem value="Badminton">Badminton</SelectItem>
-                                <SelectItem value="Javelin">Javelin</SelectItem>
-                                <SelectItem value="Kabaddi">Kabaddi</SelectItem>
-                                <SelectItem value="Volleyball">Volleyball</SelectItem>
+                                {ALL_SPORTS.map(sport => (
+                                  <SelectItem key={sport} value={sport}>{sport}</SelectItem>
+                                ))}
                             </SelectContent>
                         </Select>
                         <FormMessage />

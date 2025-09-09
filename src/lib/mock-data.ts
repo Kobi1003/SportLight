@@ -1,8 +1,12 @@
+export const ALL_SPORTS = ['Football', 'Basketball', 'Tennis', 'Cricket', 'Long Jump', 'High Jump', 'Archery', 'Shooting', 'Badminton', 'Javelin', 'Kabaddi', 'Volleyball'] as const;
+
+export type Sport = (typeof ALL_SPORTS)[number];
+
 export type Player = {
   id: string;
   name: string;
   avatar: string;
-  sport: 'Football' | 'Basketball' | 'Tennis' | 'Cricket' | 'Long Jump' | 'High Jump' | 'Archery' | 'Shooting' | 'Badminton' | 'Javelin' | 'Kabaddi' | 'Volleyball';
+  sport: Sport;
   age: number;
   location: string;
   height: number;

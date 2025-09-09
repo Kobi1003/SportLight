@@ -8,6 +8,8 @@ import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search } from 'lucide-react';
 import { PlayerProfileModal } from './player-profile-modal';
+import { ALL_SPORTS } from '@/lib/mock-data';
+
 
 interface PlayerDashboardProps {
   players: Player[];
@@ -27,7 +29,7 @@ export function PlayerDashboard({ players }: PlayerDashboardProps) {
     });
   }, [players, searchTerm, sportFilter]);
 
-  const sports = useMemo(() => ['all', ...Array.from(new Set(players.map(p => p.sport)))], [players]);
+  const sports = useMemo(() => ['all', ...ALL_SPORTS], []);
 
   const handleViewProfile = (player: Player) => {
     setSelectedPlayer(player);
