@@ -1,3 +1,4 @@
+
 import type { Player } from "@/lib/mock-data";
 import {
   Card,
@@ -14,9 +15,10 @@ import { CheckCircle, Shield, Medal } from "lucide-react";
 
 interface PlayerCardProps {
   player: Player;
+  onViewProfile: (player: Player) => void;
 }
 
-export function PlayerCard({ player }: PlayerCardProps) {
+export function PlayerCard({ player, onViewProfile }: PlayerCardProps) {
   return (
     <Card className="hover:shadow-primary/20 hover:shadow-lg transition-shadow duration-300">
       <CardHeader className="flex flex-row items-center gap-4">
@@ -54,7 +56,7 @@ export function PlayerCard({ player }: PlayerCardProps) {
             <p>{player.location}</p>
             <p>Age: {player.age}</p>
         </div>
-        <Button>View Profile</Button>
+        <Button onClick={() => onViewProfile(player)}>View Profile</Button>
       </CardFooter>
     </Card>
   );

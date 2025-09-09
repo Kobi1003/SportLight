@@ -1,3 +1,4 @@
+
 'use client';
 
 import { useState, useMemo } from 'react';
@@ -6,6 +7,7 @@ import { PlayerCard } from './player-card';
 import { Input } from '@/components/ui/input';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Search } from 'lucide-react';
+import { PlayerProfileModal } from './player-profile-modal';
 
 interface PlayerDashboardProps {
   players: Player[];
@@ -14,6 +16,7 @@ interface PlayerDashboardProps {
 export function PlayerDashboard({ players }: PlayerDashboardProps) {
   const [searchTerm, setSearchTerm] = useState('');
   const [sportFilter, setSportFilter] = useState('all');
+  const [selectedPlayer, setSelectedPlayer] = useState<Player | null>(null);
 
   const filteredPlayers = useMemo(() => {
     return players.filter((player) => {
@@ -25,6 +28,15 @@ export function PlayerDashboard({ players }: PlayerDashboardProps) {
   }, [players, searchTerm, sportFilter]);
 
   const sports = useMemo(() => ['all', ...Array.from(new Set(players.map(p => p.sport)))], [players]);
+
+  const handleViewProfile = (player: Player) => {
+    setSelectedPlayer(player);
+  };
+
+  const handleCloseModal = () => {
+    setSelectedPlayer(null);
+  };
+
 
   return (
     <div className="flex flex-col gap-6">
@@ -55,7 +67,7 @@ export function PlayerDashboard({ players }: PlayerDashboardProps) {
       {filteredPlayers.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {filteredPlayers.map((player) => (
-            <PlayerCard key={player.id} player={player} />
+            <PlayerCard key={player.id} player={player} onViewProfile={handleViewProfile} />
           ))}
         </div>
       ) : (
@@ -64,6 +76,11 @@ export function PlayerDashboard({ players }: PlayerDashboardProps) {
           <p className="text-muted-foreground">Try adjusting your search or filters.</p>
         </div>
       )}
+      <PlayerProfileModal 
+        player={selectedPlayer}
+        open={!!selectedPlayer}
+        onOpenChange={(open) => !open && handleCloseModal()}
+      />
     </div>
   );
 }
