@@ -40,10 +40,10 @@ export function PlayerProfileModal({ player, open, onOpenChange }: PlayerProfile
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-xl">
+      <DialogContent className="sm:max-w-lg">
         <DialogHeader>
-          <div className="flex items-center gap-4 mb-4">
-            <Avatar className="h-24 w-24 border-4 border-primary/50">
+          <div className="flex items-center gap-4">
+            <Avatar className="h-20 w-20 border-4 border-primary/50">
               <AvatarImage src={player.avatar} alt={player.name} data-ai-hint="person portrait" />
               <AvatarFallback>{player.name.charAt(0)}</AvatarFallback>
             </Avatar>
@@ -61,8 +61,8 @@ export function PlayerProfileModal({ player, open, onOpenChange }: PlayerProfile
             </div>
           </div>
         </DialogHeader>
-        <div className="space-y-4 py-4">
-          <div className="grid grid-cols-2 gap-4 text-sm text-muted-foreground">
+        <div className="space-y-3 py-4">
+          <div className="grid grid-cols-2 gap-x-4 gap-y-2 text-sm text-muted-foreground">
             <div className="flex items-center">
               <MapPin className="mr-2 h-4 w-4" />
               <span>{player.location}</span>
@@ -100,13 +100,13 @@ export function PlayerProfileModal({ player, open, onOpenChange }: PlayerProfile
           </div>
           <div>
             <h4 className="font-semibold mb-2 flex items-center gap-2"><Award className="w-4 h-4 text-primary"/> Achievements</h4>
-            <div className="bg-muted/50 p-3 rounded-md space-y-3">
+            <div className="bg-muted/50 p-3 rounded-md space-y-2">
               {player.achievementsImage && (
                 <Image
                     src={player.achievementsImage}
                     alt="Player achievements visualization"
-                    width={400}
-                    height={300}
+                    width={300}
+                    height={225}
                     className="rounded-md object-cover w-full"
                     data-ai-hint="achievement award"
                 />
@@ -115,7 +115,7 @@ export function PlayerProfileModal({ player, open, onOpenChange }: PlayerProfile
             </div>
           </div>
         </div>
-        <DialogFooter className="sm:justify-between">
+        <DialogFooter className="sm:justify-between pt-2">
             <AlertDialog>
                 <AlertDialogTrigger asChild>
                     <Button variant="destructive">
