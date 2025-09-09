@@ -1,6 +1,6 @@
 "use client";
 
-import { useActionState, useRef, useTransition } from "react";
+import { useActionState, useRef, useTransition, useState } from "react";
 import { handleAchievementImage } from "@/lib/actions";
 import { useFormStatus } from "react-dom";
 import { FormLabel, FormMessage, FormDescription, FormItem, FormControl } from "@/components/ui/form";
@@ -56,6 +56,24 @@ export function AchievementGenerator({ textValue, onTextChange, onImageGenerated
                 toast({ title: "Image Generated", description: "Your new achievement image is ready." });
             }
         });
+    };
+
+    const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+            setImageFile(file);
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                const result = reader.result as string;
+                setPreviewUrl(result);
+                onReferenceImageSelected(result);
+            };
+            reader.readAsDataURL(file);
+        } else {
+            setImageFile(null);
+            setPreviewUrl(null);
+            onReferenceImageSelected(null);
+        }
     };
 
 
@@ -129,5 +147,3 @@ export function AchievementGenerator({ textValue, onTextChange, onImageGenerated
     </div>
   );
 }
-
-    
