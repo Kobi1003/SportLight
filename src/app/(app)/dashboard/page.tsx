@@ -11,11 +11,11 @@ export default function DashboardPage() {
 
   useEffect(() => {
     // Load initial players only once if the player list is empty
-    if (isInitialLoad && players.length === 0) {
+    if (players.length === 0 && isInitialLoad) {
       setPlayers(initialPlayers);
       setIsInitialLoad(false);
     }
-  }, [players, setPlayers, isInitialLoad]);
+  }, [players.length, setPlayers, isInitialLoad]);
 
   return (
     <div className="container mx-auto">
