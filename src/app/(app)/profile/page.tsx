@@ -41,6 +41,8 @@ const playerFormSchema = z.object({
   sport: z.enum(["Football", "Basketball", "Tennis", "Cricket", "Long Jump", "High Jump", "Archery", "Shooting", "Badminton", "Javelin"]),
   age: z.coerce.number().min(1, "Age is required"),
   location: z.string().min(1, "Location is required"),
+  height: z.coerce.number().min(1, "Height is required"),
+  weight: z.coerce.number().min(1, "Weight is required"),
   skills: z.string().min(1, "Skills are required"),
   achievementsText: z.string().min(1, "Achievements text is required"),
 });
@@ -60,6 +62,8 @@ export default function ProfilePage() {
       sport: "Football",
       age: undefined,
       location: "",
+      height: undefined,
+      weight: undefined,
       skills: "",
       achievementsText: "",
     },
@@ -178,6 +182,34 @@ export default function ProfilePage() {
                       </FormItem>
                     )}
                   />
+                   <div className="grid grid-cols-2 gap-4">
+                    <FormField
+                        control={form.control}
+                        name="height"
+                        render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Height (cm)</FormLabel>
+                            <FormControl>
+                            <Input type="number" placeholder="e.g. 180" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                        )}
+                    />
+                    <FormField
+                        control={form.control}
+                        name="weight"
+                        render={({ field }) => (
+                        <FormItem>
+                            <FormLabel>Weight (kg)</FormLabel>
+                            <FormControl>
+                            <Input type="number" placeholder="e.g. 75" {...field} />
+                            </FormControl>
+                            <FormMessage />
+                        </FormItem>
+                        )}
+                    />
+                   </div>
                   <FormField
                     control={form.control}
                     name="skills"

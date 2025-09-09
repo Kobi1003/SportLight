@@ -5,6 +5,8 @@ export type Player = {
   sport: 'Football' | 'Basketball' | 'Tennis' | 'Cricket' | 'Long Jump' | 'High Jump' | 'Archery' | 'Shooting' | 'Badminton' | 'Javelin';
   age: number;
   location: string;
+  height: number;
+  weight: number;
   skills: string[];
   verified: boolean;
   achievementsText: string;
@@ -19,6 +21,8 @@ export const players: Player[] = [
     sport: 'Football',
     age: 22,
     location: 'London, UK',
+    height: 180,
+    weight: 75,
     skills: ['Dribbling', 'Passing', 'Shooting'],
     verified: true,
     achievementsText: 'A dynamic forward with a knack for scoring crucial goals. I have been playing since I was 5 and have won multiple local tournaments.',
@@ -31,6 +35,8 @@ export const players: Player[] = [
     sport: 'Basketball',
     age: 19,
     location: 'Madrid, Spain',
+    height: 175,
+    weight: 68,
     skills: ['Shooting', 'Defense', 'Playmaking'],
     verified: true,
     achievementsText: 'Point guard with exceptional court vision and leadership skills. Ready to take my game to the professional level.',
@@ -43,6 +49,8 @@ export const players: Player[] = [
     sport: 'Tennis',
     age: 24,
     location: 'Shanghai, China',
+    height: 185,
+    weight: 80,
     skills: ['Forehand', 'Serve', 'Volley'],
     verified: false,
     achievementsText: 'Aggressive baseliner with a powerful forehand. Seeking a club to further develop my skills and compete internationally.',
@@ -55,6 +63,8 @@ export const players: Player[] = [
     sport: 'Football',
     age: 20,
     location: 'New York, USA',
+    height: 178,
+    weight: 72,
     skills: ['Tackling', 'Heading', 'Positioning'],
     verified: true,
     achievementsText: 'A rock-solid defender with great game-reading abilities. Captain of my college team for two consecutive years.',
@@ -67,6 +77,8 @@ export const players: Player[] = [
     sport: 'Basketball',
     age: 21,
     location: 'Rabat, Morocco',
+    height: 190,
+    weight: 85,
     skills: ['Rebounding', 'Blocking', 'Post Moves'],
     verified: false,
     achievementsText: 'Dominant center with a strong presence in the paint. I excel at rebounding and protecting the rim.',
@@ -79,6 +91,8 @@ export const players: Player[] = [
     sport: 'Tennis',
     age: 23,
     location: 'Tokyo, Japan',
+    height: 170,
+    weight: 65,
     skills: ['Backhand', 'Slice', 'Footwork'],
     verified: true,
     achievementsText: 'A strategic player with a versatile all-court game. My two-handed backhand is my biggest weapon.',
@@ -91,6 +105,8 @@ export const players: Player[] = [
     sport: 'Football',
     age: 18,
     location: 'Manchester, UK',
+    height: 182,
+    weight: 78,
     skills: ['Pace', 'Finishing', 'Agility'],
     verified: false,
     achievementsText: 'Lightning-fast winger who loves to take on defenders. Top scorer in my youth league last season.',
@@ -103,6 +119,8 @@ export const players: Player[] = [
     sport: 'Basketball',
     age: 20,
     location: 'Los Angeles, USA',
+    height: 168,
+    weight: 62,
     skills: ['3-Point Shooting', 'Ball Handling', 'Speed'],
     verified: true,
     achievementsText: 'Sharpshooter with deep range and quick release. Confident in my ability to spread the floor and create opportunities.',
