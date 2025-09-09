@@ -33,6 +33,8 @@ import {
 import { usePlayers } from "@/hooks/use-players";
 import { useRouter } from "next/navigation";
 import { useToast } from "@/hooks/use-toast";
+import { AchievementGenerator } from "@/components/profile/achievement-generator";
+import { useState } from "react";
 
 const playerFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -40,13 +42,14 @@ const playerFormSchema = z.object({
   age: z.coerce.number().min(1, "Age is required"),
   location: z.string().min(1, "Location is required"),
   skills: z.string().min(1, "Skills are required"),
-  bio: z.string().min(1, "Bio is required"),
+  achievementsText: z.string().min(1, "Achievements text is required"),
 });
 
 export default function ProfilePage() {
   const { addPlayer } = usePlayers();
   const router = useRouter();
   const { toast } = useToast();
+  const [generatedImage, setGeneratedImage] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof playerFormSchema>>({
     resolver: zodResolver(playerFormSchema),
@@ -56,17 +59,27 @@ export default function ProfilePage() {
       age: undefined,
       location: "",
       skills: "",
-      bio: "",
+      achievementsText: "",
     },
   });
 
   function onSubmit(values: z.infer<typeof playerFormSchema>) {
+    if (!generatedImage) {
+        toast({
+            variant: "destructive",
+            title: "Image not generated",
+            description: "Please generate an achievement image before creating the player.",
+        });
+        return;
+    }
+
     const newPlayer = {
       id: new Date().toISOString(),
       ...values,
       skills: values.skills.split(",").map((s) => s.trim()),
       avatar: `https://picsum.photos/seed/${Math.random()}/200/200`,
       verified: false,
+      achievementsImage: generatedImage,
     };
     addPlayer(newPlayer);
     toast({
@@ -172,17 +185,15 @@ export default function ProfilePage() {
                   />
                   <FormField
                     control={form.control}
-                    name="bio"
+                    name="achievementsText"
                     render={({ field }) => (
-                      <FormItem>
-                        <FormLabel>Achievements & Bio</FormLabel>
-                        <FormControl>
-                          <Textarea placeholder="A dynamic forward with a knack for scoring crucial goals..." {...field} />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
+                        <AchievementGenerator
+                            textValue={field.value}
+                            onTextChange={field.onChange}
+                            onImageGenerated={setGeneratedImage}
+                        />
                     )}
-                  />
+                    />
                 </CardContent>
                 <CardFooter>
                   <Button type="submit">Create Player</Button>

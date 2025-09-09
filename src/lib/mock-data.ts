@@ -7,7 +7,8 @@ export type Player = {
   location: string;
   skills: string[];
   verified: boolean;
-  bio: string;
+  achievementsText: string;
+  achievementsImage: string;
 };
 
 export const players: Player[] = [
@@ -20,7 +21,8 @@ export const players: Player[] = [
     location: 'London, UK',
     skills: ['Dribbling', 'Passing', 'Shooting'],
     verified: true,
-    bio: 'A dynamic forward with a knack for scoring crucial goals. I have been playing since I was 5 and have won multiple local tournaments.',
+    achievementsText: 'A dynamic forward with a knack for scoring crucial goals. I have been playing since I was 5 and have won multiple local tournaments.',
+    achievementsImage: 'https://picsum.photos/seed/achievement1/400/300'
   },
   {
     id: '2',
@@ -31,7 +33,8 @@ export const players: Player[] = [
     location: 'Madrid, Spain',
     skills: ['Shooting', 'Defense', 'Playmaking'],
     verified: true,
-    bio: 'Point guard with exceptional court vision and leadership skills. Ready to take my game to the professional level.',
+    achievementsText: 'Point guard with exceptional court vision and leadership skills. Ready to take my game to the professional level.',
+    achievementsImage: 'https://picsum.photos/seed/achievement2/400/300'
   },
   {
     id: '3',
@@ -42,7 +45,8 @@ export const players: Player[] = [
     location: 'Shanghai, China',
     skills: ['Forehand', 'Serve', 'Volley'],
     verified: false,
-    bio: 'Aggressive baseliner with a powerful forehand. Seeking a club to further develop my skills and compete internationally.',
+    achievementsText: 'Aggressive baseliner with a powerful forehand. Seeking a club to further develop my skills and compete internationally.',
+    achievementsImage: 'https://picsum.photos/seed/achievement3/400/300'
   },
   {
     id: '4',
@@ -53,7 +57,8 @@ export const players: Player[] = [
     location: 'New York, USA',
     skills: ['Tackling', 'Heading', 'Positioning'],
     verified: true,
-    bio: 'A rock-solid defender with great game-reading abilities. Captain of my college team for two consecutive years.',
+    achievementsText: 'A rock-solid defender with great game-reading abilities. Captain of my college team for two consecutive years.',
+    achievementsImage: 'https://picsum.photos/seed/achievement4/400/300'
   },
   {
     id: '5',
@@ -64,7 +69,8 @@ export const players: Player[] = [
     location: 'Rabat, Morocco',
     skills: ['Rebounding', 'Blocking', 'Post Moves'],
     verified: false,
-    bio: 'Dominant center with a strong presence in the paint. I excel at rebounding and protecting the rim.',
+    achievementsText: 'Dominant center with a strong presence in the paint. I excel at rebounding and protecting the rim.',
+    achievementsImage: 'https://picsum.photos/seed/achievement5/400/300'
   },
   {
     id: '6',
@@ -75,7 +81,8 @@ export const players: Player[] = [
     location: 'Tokyo, Japan',
     skills: ['Backhand', 'Slice', 'Footwork'],
     verified: true,
-    bio: 'A strategic player with a versatile all-court game. My two-handed backhand is my biggest weapon.',
+    achievementsText: 'A strategic player with a versatile all-court game. My two-handed backhand is my biggest weapon.',
+    achievementsImage: 'https://picsum.photos/seed/achievement6/400/300'
   },
     {
     id: '7',
@@ -86,7 +93,8 @@ export const players: Player[] = [
     location: 'Manchester, UK',
     skills: ['Pace', 'Finishing', 'Agility'],
     verified: false,
-    bio: 'Lightning-fast winger who loves to take on defenders. Top scorer in my youth league last season.',
+    achievementsText: 'Lightning-fast winger who loves to take on defenders. Top scorer in my youth league last season.',
+    achievementsImage: 'https://picsum.photos/seed/achievement7/400/300'
   },
   {
     id: '8',
@@ -97,6 +105,7 @@ export const players: Player[] = [
     location: 'Los Angeles, USA',
     skills: ['3-Point Shooting', 'Ball Handling', 'Speed'],
     verified: true,
-    bio: 'Sharpshooter with deep range and quick release. Confident in my ability to spread the floor and create opportunities.',
+    achievementsText: 'Sharpshooter with deep range and quick release. Confident in my ability to spread the floor and create opportunities.',
+    achievementsImage: 'https://picsum.photos/seed/achievement8/400/300'
   },
 ];

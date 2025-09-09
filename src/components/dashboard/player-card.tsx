@@ -41,7 +41,7 @@ export function PlayerCard({ player, onViewProfile }: PlayerCardProps) {
       </CardHeader>
       <CardContent>
         <p className="text-sm text-muted-foreground line-clamp-2 min-h-[40px]">
-          {player.bio}
+          {player.achievementsText}
         </p>
         <div className="mt-4 flex flex-wrap gap-2">
           {player.skills.map((skill) => (
