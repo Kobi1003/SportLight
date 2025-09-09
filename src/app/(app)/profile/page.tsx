@@ -176,7 +176,7 @@ export default function ProfilePage() {
                       <FormItem>
                         <FormLabel>Location</FormLabel>
                         <FormControl>
-                          <Input placeholder="e.g. London, UK" {...field} />
+                          <Input placeholder="e.g. Mumbai, India" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -257,7 +257,7 @@ export default function ProfilePage() {
             <CardContent className="space-y-4">
               <div className="space-y-2">
                 <Label htmlFor="club-name">Club Name</Label>
-                <Input id="club-name" placeholder="e.g., FC Barcelona" />
+                <Input id="club-name" placeholder="e.g., Mumbai Indians" />
               </div>
               <div className="space-y-2">
                 <Label htmlFor="criteria">Player Selection Criteria</Label>
