@@ -152,29 +152,27 @@ const videoGenerationSchema = z.object({
     sport: z.string().min(1, 'Sport is required.'),
 });
 
-// This function now generates an image instead of a video.
 export async function handleVideoGeneration(prevState: any, formData: FormData) {
     const validatedFields = videoGenerationSchema.safeParse(Object.fromEntries(formData.entries()));
     
     if (!validatedFields.success) {
         return {
             ...prevState,
-            videoUrl: null, // Still named videoUrl in state for minimal changes
+            videoUrl: null,
             error: 'A prompt is required to generate an example.',
         };
     }
 
     try {
-        // We reuse the achievement image generator, but just for the text-to-image part.
-        const result = await generateAchievementImage({text: validatedFields.data.prompt});
+        const result = await generateSportsVideo({prompt: validatedFields.data.prompt});
         return {
             ...prevState,
-            videoUrl: result.imageUrl, // The result is an image URL
+            videoUrl: result.videoUrl,
             error: null,
         }
     } catch (error: any) {
         console.error(error);
-        const errorMessage = error.message || 'Failed to generate example image. The model may be unavailable.';
+        const errorMessage = error.message || 'Failed to generate example video. The model may be unavailable.';
         return {
             ...prevState,
             videoUrl: null,

@@ -8,10 +8,9 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Lightbulb, Check, Camera, PersonStanding, Clapperboard, Loader, Video, Image as ImageIcon } from 'lucide-react';
+import { Lightbulb, Check, Camera, PersonStanding, Clapperboard, Loader, Video as VideoIcon } from 'lucide-react';
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from '../ui/accordion';
 import { useState } from 'react';
-import Image from 'next/image';
 
 const initialState = {
   guidance: null,
@@ -19,7 +18,7 @@ const initialState = {
 };
 
 const initialVideoState = {
-    videoUrl: null, // This will now be an imageUrl
+    videoUrl: null,
     error: null,
 }
 
@@ -31,13 +30,13 @@ function GuidanceSubmitButton() {
 function VideoSubmitButton({ sport }: { sport: string }) {
     const { pending } = useFormStatus();
     return <Button type="submit" size="sm" variant="secondary" disabled={pending || !sport} className="w-full">
-        {pending ? <><Loader className="w-4 h-4 mr-2 animate-spin"/> Generating...</> : <><ImageIcon className="w-4 h-4 mr-2" /> Generate Example Image</>}
+        {pending ? <><Loader className="w-4 h-4 mr-2 animate-spin"/> Generating...</> : <><VideoIcon className="w-4 h-4 mr-2" /> Generate Example Video</>}
     </Button>;
 }
 
 const sportCriteria = {
     "Cricket": {
-        prompt: "An image showing the correct camera setup for recording a cricket bowler. The shot should be wide-angle, capturing the bowler's full run-up and delivery, the batsman's stance, and the wickets. The camera angle should be from the side, slightly elevated, to see the player's technique and the ball's trajectory clearly. The image should have annotations or diagrams showing the ideal camera placement.",
+        prompt: "A video showing the correct camera setup for recording a cricket bowler. The shot should be wide-angle, capturing the bowler's full run-up and delivery, the batsman's stance, and the wickets. The camera angle should be from the side, slightly elevated, to see the player's technique and the ball's trajectory clearly. The video should have annotations or diagrams showing the ideal camera placement.",
         criteria: [
             "Bowler’s run-up and batsman stance fully visible.",
             "Entire delivery from start to finish is in the frame.",
@@ -46,39 +45,39 @@ const sportCriteria = {
         ],
     },
     "Long Jump": {
-        prompt: "An image illustrating the correct camera placement for a long jump. The camera should be positioned to the side of the runway to capture the athlete's entire approach, the take-off from the board, their flight through the air, and the landing in the pit, all in one continuous frame.",
+        prompt: "A video illustrating the correct camera placement for a long jump. The camera should be positioned to the side of the runway to capture the athlete's entire approach, the take-off from the board, their flight through the air, and the landing in the pit, all in one continuous frame.",
         criteria: ["Full runway must be in the frame.", "Clear view of the take-off board.", "Entire landing pit should be visible."],
     },
     "High Jump": {
-        prompt: "An image showing the ideal camera angle for a high jump. The camera is placed perpendicular to the bar to clearly show whether the athlete clears it. The entire approach, the bar, and the landing mat must be visible.",
+        prompt: "A video showing the ideal camera angle for a high jump. The camera is placed perpendicular to the bar to clearly show whether the athlete clears it. The entire approach, the bar, and the landing mat must be visible.",
         criteria: ["Entire approach run is visible.", "The bar and landing mat are fully in frame.", "Use a camera angle perpendicular to the bar for clearance view."],
     },
     "Kabaddi": {
-        prompt: "An image showing the recommended camera setup for a Kabaddi match. The view should be from a high angle, covering the full ground, to clearly capture the raider's movements, defensive formations, tackles, and lunges without cropping any players.",
+        prompt: "A video showing the recommended camera setup for a Kabaddi match. The view should be from a high angle, covering the full ground, to clearly capture the raider's movements, defensive formations, tackles, and lunges without cropping any players.",
         criteria: ["Full view of the kabaddi ground.", "Clearly captures tackles, lunges, and raids.", "Do not crop the player's limbs or torso."],
     },
     "Volleyball": {
-        prompt: "An image diagram of the best camera position for recording volleyball. The camera should be elevated and to the side to capture the entire court, the net, and player movements, including spikes, blocks, and serves.",
+        prompt: "A video diagram of the best camera position for recording volleyball. The camera should be elevated and to the side to capture the entire court, the net, and player movements, including spikes, blocks, and serves.",
         criteria: ["Entire court, including the net, is visible.", "Captures spikes and blocks effectively.", "Player's hand and arm motions are clear."],
     },
     "Football": {
-        prompt: "An image showing the correct way to film football skills. The camera angle should capture the player's interaction with the ball, their body posture during dribbling, passing, and shooting, and keep the goal area visible for shooting drills.",
+        prompt: "A video showing the correct way to film football skills. The camera angle should capture the player's interaction with the ball, their body posture during dribbling, passing, and shooting, and keep the goal area visible for shooting drills.",
         criteria: ["Clear view of ball interaction.", "Posture during dribbles, passes, and kicks.", "Goal area is visible for shooting drills."],
     },
     "Archery": {
-        prompt: "An image detailing the ideal camera setup for archery. The frame must capture both the shooter and the target. A split-screen or a side-on view is needed to see the archer's form, extension, and aiming posture clearly.",
+        prompt: "A video detailing the ideal camera setup for archery. The frame must capture both the shooter and the target. A split-screen or a side-on view is needed to see the archer's form, extension, and aiming posture clearly.",
         criteria: ["Both shooter and target are in the frame.", "Archer's extension and aiming posture are clearly visible."],
     },
      "Shooting": {
-        prompt: "An image showing the correct way to film a shooter. The frame must include both the shooter and the target to judge aim and stability. Their aiming posture is key.",
+        prompt: "A video showing the correct way to film a shooter. The frame must include both the shooter and the target to judge aim and stability. Their aiming posture is key.",
         criteria: ["Both shooter and target are in the frame.", "Shooter's aiming posture is clear and stable."],
     },
     "Badminton": {
-        prompt: "An image illustrating the proper camera angle for a badminton match, focusing on footwork. A slightly elevated, side-court view is best to see the full court, racket and wrist motions, and player movement.",
+        prompt: "A video illustrating the proper camera angle for a badminton match, focusing on footwork. A slightly elevated, side-court view is best to see the full court, racket and wrist motions, and player movement.",
         criteria: ["Full court is visible.", "Racket and wrist motions are clear.", "Player's footwork is a primary focus."],
     },
     "Javelin": {
-        prompt: "An image showing the ideal camera placement for a javelin throw. It must capture the full runway, the complete throwing motion, the release, and the follow-through in one continuous shot from the side.",
+        prompt: "A video showing the ideal camera placement for a javelin throw. It must capture the full runway, the complete throwing motion, the release, and the follow-through in one continuous shot from the side.",
         criteria: ["Full runway is visible.", "The complete throwing motion is captured.", "Release and follow-through are clearly shown."],
     },
 };
@@ -171,12 +170,12 @@ export function VideoGuidance() {
 
             {videoState.videoUrl && (
                 <div className='mb-4 rounded-lg overflow-hidden'>
-                    <Image src={videoState.videoUrl} alt="Generated example" width={400} height={300} className='w-full aspect-video bg-muted object-cover'></Image>
+                    <video src={videoState.videoUrl} controls className='w-full aspect-video bg-muted' />
                 </div>
             )}
             {videoState.error && (
                 <Alert variant="destructive">
-                    <AlertTitle>Image Generation Failed</AlertTitle>
+                    <AlertTitle>Video Generation Failed</AlertTitle>
                     <AlertDescription>{videoState.error}</AlertDescription>
                 </Alert>
             )}
