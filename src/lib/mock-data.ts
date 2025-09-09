@@ -13,7 +13,11 @@ export type Player = {
   verified: boolean;
   achievementsText: string;
   achievementsImage: string;
+  creatorEmail: string; // Added to simulate ownership
 };
+
+// Mock logged-in user email
+export const MOCK_USER_EMAIL = 'user@example.com';
 
 export const players: Player[] = [
   {
@@ -30,7 +34,8 @@ export const players: Player[] = [
     skills: ['Batting', 'Pace Bowling', 'Fielding'],
     verified: true,
     achievementsText: 'A dynamic all-rounder with a knack for scoring crucial runs. I have been playing since I was 8 and have won multiple state-level tournaments.',
-    achievementsImage: 'https://picsum.photos/seed/achievement1/400/300'
+    achievementsImage: 'https://picsum.photos/seed/achievement1/400/300',
+    creatorEmail: 'aarav@example.com'
   },
   {
     id: '2',
@@ -46,7 +51,8 @@ export const players: Player[] = [
     skills: ['Smash', 'Net Play', 'Drop Shot'],
     verified: true,
     achievementsText: 'Singles player with exceptional court coverage and leadership skills. Ready to take my game to the professional level.',
-    achievementsImage: 'https://picsum.photos/seed/achievement2/400/300'
+    achievementsImage: 'https://picsum.photos/seed/achievement2/400/300',
+    creatorEmail: 'priya@example.com'
   },
   {
     id: '3',
@@ -62,7 +68,8 @@ export const players: Player[] = [
     skills: ['Dribbling', 'Passing', 'Finishing'],
     verified: false,
     achievementsText: 'Aggressive forward with a powerful shot. Seeking a club to further develop my skills and compete in the national league.',
-    achievementsImage: 'https://picsum.photos/seed/achievement3/400/300'
+    achievementsImage: 'https://picsum.photos/seed/achievement3/400/300',
+    creatorEmail: 'rohan@example.com'
   },
   {
     id: '4',
@@ -78,7 +85,8 @@ export const players: Player[] = [
     skills: ['Targeting', 'Consistency', 'Focus'],
     verified: true,
     achievementsText: 'A rock-solid archer with great precision. Captain of my university team for two consecutive years.',
-    achievementsImage: 'https://picsum.photos/seed/achievement4/400/300'
+    achievementsImage: 'https://picsum.photos/seed/achievement4/400/300',
+    creatorEmail: 'saanvi@example.com'
   },
   {
     id: '5',
@@ -94,7 +102,8 @@ export const players: Player[] = [
     skills: ['Throwing Power', 'Technique', 'Run-up'],
     verified: false,
     achievementsText: 'Dominant thrower with a strong presence. I excel at achieving long distances and have a personal best of 85 meters.',
-    achievementsImage: 'https://picsum.photos/seed/achievement5/400/300'
+    achievementsImage: 'https://picsum.photos/seed/achievement5/400/300',
+    creatorEmail: 'aditya@example.com'
   },
   {
     id: '6',
@@ -110,7 +119,8 @@ export const players: Player[] = [
     skills: ['Backhand', 'Slice', 'Footwork'],
     verified: true,
     achievementsText: 'A strategic player with a versatile all-court game. My two-handed backhand is my biggest weapon.',
-    achievementsImage: 'https://picsum.photos/seed/achievement6/400/300'
+    achievementsImage: 'https://picsum.photos/seed/achievement6/400/300',
+    creatorEmail: 'diya@example.com'
   },
     {
     id: '7',
@@ -126,7 +136,8 @@ export const players: Player[] = [
     skills: ['Pace', 'Finishing', 'Agility'],
     verified: false,
     achievementsText: 'Lightning-fast winger who loves to take on defenders. Top scorer in my youth league last season.',
-    achievementsImage: 'https://picsum.photos/seed/achievement7/400/300'
+    achievementsImage: 'https://picsum.photos/seed/achievement7/400/300',
+    creatorEmail: 'vihaan@example.com'
   },
   {
     id: '8',
@@ -142,6 +153,7 @@ export const players: Player[] = [
     skills: ['3-Point Shooting', 'Ball Handling', 'Speed'],
     verified: true,
     achievementsText: 'Sharpshooter with deep range and quick release. Confident in my ability to spread the floor and create opportunities.',
-    achievementsImage: 'https://picsum.photos/seed/achievement8/400/300'
+    achievementsImage: 'https://picsum.photos/seed/achievement8/400/300',
+    creatorEmail: 'ananya@example.com'
   },
 ];

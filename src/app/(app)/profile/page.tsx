@@ -36,6 +36,7 @@ import { useToast } from "@/hooks/use-toast";
 import { AchievementGenerator } from "@/components/profile/achievement-generator";
 import { useState } from "react";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { MOCK_USER_EMAIL } from "@/lib/mock-data";
 
 const playerFormSchema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -93,6 +94,7 @@ export default function ProfilePage() {
       avatar: `https://picsum.photos/seed/${playerId}/200/200`,
       verified: false,
       achievementsImage: achievementImage,
+      creatorEmail: MOCK_USER_EMAIL, // Assign the mock user's email
     };
     addPlayer(newPlayer);
     toast({
