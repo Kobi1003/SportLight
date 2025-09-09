@@ -150,6 +150,7 @@ export function VideoGuidance() {
     const [skill, setSkill] = useState('');
     const [cameraAngle, setCameraAngle] = useState('');
     const [playerVisibility, setPlayerVisibility] = useState('');
+    const [fileName, setFileName] = useState('');
 
     useEffect(() => {
         if (selectedSport && sportCriteria[selectedSport]) {
@@ -194,6 +195,17 @@ export function VideoGuidance() {
                         <div className="space-y-2">
                             <Label htmlFor="player-visibility-guidance">Player Visibility</Label>
                             <Textarea id="player-visibility-guidance" name="playerVisibility" placeholder="Describe what is visible in the frame..." required value={playerVisibility} onChange={(e) => setPlayerVisibility(e.target.value)} />
+                        </div>
+                         <div className="space-y-2">
+                            <Label htmlFor="video-file-guidance">Upload Your Video</Label>
+                            <Input 
+                                id="video-file-guidance" 
+                                name="video" 
+                                type="file" 
+                                accept="video/*"
+                                onChange={(e) => setFileName(e.target.files?.[0]?.name || '')}
+                            />
+                            {fileName && <p className="text-xs text-muted-foreground flex items-center gap-2 pt-2"><VideoIcon className="w-4 h-4"/> Selected: {fileName}</p>}
                         </div>
 
                          <div className="pt-4 space-y-4">
@@ -275,5 +287,3 @@ export function VideoGuidance() {
         </div>
     );
 }
-
-    
