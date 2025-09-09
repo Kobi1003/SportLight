@@ -1,7 +1,9 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode } from "react";
-import type { Player } from "@/lib/mock-data";
+import { createContext, useContext, useState, ReactNode, useEffect } from "react";
+import { Player, players as initialPlayers } from "@/lib/mock-data";
+
+const PLAYERS_STORAGE_KEY = "sportlight-players";
 
 type PlayersContextType = {
   players: Player[];
@@ -12,19 +14,46 @@ type PlayersContextType = {
 const PlayersContext = createContext<PlayersContextType | undefined>(undefined);
 
 export function PlayersProvider({ children }: { children: ReactNode }) {
-  const [players, setPlayers] = useState<Player[]>([]);
+  const [players, setPlayersState] = useState<Player[]>([]);
+  const [isInitialized, setIsInitialized] = useState(false);
+
+  useEffect(() => {
+    // This effect runs once on mount to load from localStorage.
+    try {
+      const storedPlayers = localStorage.getItem(PLAYERS_STORAGE_KEY);
+      if (storedPlayers) {
+        setPlayersState(JSON.parse(storedPlayers));
+      } else {
+        // If no players in storage, load mock data as a default.
+        setPlayersState(initialPlayers);
+      }
+    } catch (error) {
+      console.error("Failed to load players from localStorage", error);
+      // Fallback to mock data if there's an error.
+      setPlayersState(initialPlayers);
+    } finally {
+        setIsInitialized(true);
+    }
+  }, []);
+
+  useEffect(() => {
+    // This effect runs whenever `players` state changes, to save to localStorage.
+    if (isInitialized) {
+        try {
+            localStorage.setItem(PLAYERS_STORAGE_KEY, JSON.stringify(players));
+        } catch (error) {
+            console.error("Failed to save players to localStorage", error);
+        }
+    }
+  }, [players, isInitialized]);
 
   const addPlayer = (player: Player) => {
-    setPlayers((prevPlayers) => {
-      // If the existing list contains only mock data, replace it.
-      // A simple way to check is if the first player has a low integer ID.
-      const isMockData = prevPlayers.length > 0 && Number(prevPlayers[0].id) < 10;
-      if (isMockData) {
-        return [player];
-      }
-      return [player, ...prevPlayers];
-    });
+    setPlayersState((prevPlayers) => [player, ...prevPlayers]);
   };
+
+  const setPlayers = (newPlayers: Player[] | ((prev: Player[]) => Player[])) => {
+    setPlayersState(newPlayers);
+  }
 
   return (
     <PlayersContext.Provider value={{ players, setPlayers, addPlayer }}>
