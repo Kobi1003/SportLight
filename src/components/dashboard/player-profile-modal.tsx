@@ -1,10 +1,24 @@
 
 import type { Player } from "@/lib/mock-data";
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from "@/components/ui/dialog";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
-import { CheckCircle, MapPin, Cake, Star, Award, Ruler, Scale, Heart, VenetianMask } from "lucide-react";
+import { CheckCircle, MapPin, Cake, Star, Award, Ruler, Scale, Heart, VenetianMask, Trash2 } from "lucide-react";
 import Image from "next/image";
+import { Button } from "../ui/button";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog"
+import { usePlayers } from "@/hooks/use-players";
+
 
 interface PlayerProfileModalProps {
   player: Player | null;
@@ -13,7 +27,16 @@ interface PlayerProfileModalProps {
 }
 
 export function PlayerProfileModal({ player, open, onOpenChange }: PlayerProfileModalProps) {
+  const { deletePlayer } = usePlayers();
+
   if (!player) return null;
+
+  const handleDelete = () => {
+    if (player) {
+      deletePlayer(player.id);
+      onOpenChange(false);
+    }
+  };
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -92,6 +115,30 @@ export function PlayerProfileModal({ player, open, onOpenChange }: PlayerProfile
             </div>
           </div>
         </div>
+        <DialogFooter className="sm:justify-between">
+            <AlertDialog>
+                <AlertDialogTrigger asChild>
+                    <Button variant="destructive">
+                        <Trash2 className="mr-2 h-4 w-4" />
+                        Delete Profile
+                    </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                    <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                        This action cannot be undone. This will permanently delete the
+                        player profile for {player.name}.
+                    </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction onClick={handleDelete}>Delete</AlertDialogAction>
+                    </AlertDialogFooter>
+                </AlertDialogContent>
+            </AlertDialog>
+            <Button variant="outline" onClick={() => onOpenChange(false)}>Close</Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

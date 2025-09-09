@@ -1,3 +1,4 @@
+
 "use client";
 
 import { createContext, useContext, useState, ReactNode, useEffect } from "react";
@@ -9,6 +10,7 @@ type PlayersContextType = {
   players: Player[];
   setPlayers: (players: Player[] | ((prev: Player[]) => Player[])) => void;
   addPlayer: (player: Player) => void;
+  deletePlayer: (playerId: string) => void;
 };
 
 const PlayersContext = createContext<PlayersContextType | undefined>(undefined);
@@ -50,13 +52,17 @@ export function PlayersProvider({ children }: { children: ReactNode }) {
   const addPlayer = (player: Player) => {
     setPlayersState((prevPlayers) => [player, ...prevPlayers]);
   };
+  
+  const deletePlayer = (playerId: string) => {
+    setPlayersState((prevPlayers) => prevPlayers.filter(p => p.id !== playerId));
+  };
 
   const setPlayers = (newPlayers: Player[] | ((prev: Player[]) => Player[])) => {
     setPlayersState(newPlayers);
   }
 
   return (
-    <PlayersContext.Provider value={{ players, setPlayers, addPlayer }}>
+    <PlayersContext.Provider value={{ players, setPlayers, addPlayer, deletePlayer }}>
       {children}
     </PlayersContext.Provider>
   );
